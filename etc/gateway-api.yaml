@@ -1,0 +1,31 @@
+Name: gateway-api
+Host: 0.0.0.0
+Port: 8888
+Mode: dev
+
+# JWT配置
+Jwt:
+  Secret: "ABCDEFG" # 生产环境放环境变量
+  AccessExpire: 3600                       # accessToken过期时间（秒）：1小时
+  RefreshExpire: 604800                    # refreshToken过期时间（秒）：7天
+
+# 新增：User RPC客户端配置（对接user服务）
+UserRpcConf:
+  Etcd:
+    Hosts:
+      - 0.0.0.0:2379
+    Key: user.rpc  # 必须和user服务的etcd key一致（user/etc/user.yaml中的Key）
+  NonBlock: true   # 非阻塞连接（开发环境推荐）
+
+# 限流配置（保护下游服务）
+Limit:
+  QPS: 1000
+  Burst: 200
+  TokenLimit: 5000
+
+# 路由转发（对接RPC服务）
+Routes:
+  - Name: user
+    Method: ANY
+    Path: /api/user/*
+    Dest: user.rpc
