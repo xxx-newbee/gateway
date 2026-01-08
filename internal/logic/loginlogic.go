@@ -4,8 +4,8 @@ package logic
 import (
 	"context"
 
-	"github.com/xxx-newbee/go-micro/gateway/internal/svc"
-	"github.com/xxx-newbee/go-micro/gateway/internal/types"
+	"github.com/xxx-newbee/gateway/internal/svc"
+	"github.com/xxx-newbee/gateway/internal/types"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 

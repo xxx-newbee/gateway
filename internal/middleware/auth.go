@@ -3,7 +3,7 @@ package middleware
 import (
 	"context"
 	"errors"
-	"github.com/xxx-newbee/go-micro/gateway/internal/svc"
+	"github.com/xxx-newbee/gateway/internal/svc"
 	"net/http"
 	"strings"
 

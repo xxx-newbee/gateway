@@ -3,9 +3,9 @@ package adapter
 import (
 	"context"
 
-	"github.com/xxx-newbee/go-micro/gateway/internal/types"
-	"github.com/xxx-newbee/go-micro/user/user"
-	"github.com/xxx-newbee/go-micro/user/userclient"
+	"github.com/xxx-newbee/gateway/internal/types"
+	"github.com/xxx-newbee/user/user"
+	"github.com/xxx-newbee/user/userclient"
 	"github.com/zeromicro/go-zero/zrpc"
 	"google.golang.org/grpc"
 )

@@ -6,8 +6,8 @@ package handler
 import (
 	"net/http"
 
-	"github.com/xxx-newbee/go-micro/gateway/internal/middleware"
-	"github.com/xxx-newbee/go-micro/gateway/internal/svc"
+	"github.com/xxx-newbee/gateway/internal/middleware"
+	"github.com/xxx-newbee/gateway/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
 )

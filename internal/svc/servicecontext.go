@@ -4,9 +4,9 @@
 package svc
 
 import (
-	"github.com/xxx-newbee/go-micro/gateway/internal/adapter"
-	"github.com/xxx-newbee/go-micro/gateway/internal/config"
-	"github.com/xxx-newbee/go-micro/gateway/internal/types"
+	"github.com/xxx-newbee/gateway/internal/adapter"
+	"github.com/xxx-newbee/gateway/internal/config"
+	"github.com/xxx-newbee/gateway/internal/types"
 	"github.com/zeromicro/go-zero/core/breaker"
 
 	"github.com/zeromicro/go-zero/zrpc"

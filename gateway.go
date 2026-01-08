@@ -7,9 +7,9 @@ import (
 	"flag"
 	"fmt"
 
-	"github.com/xxx-newbee/go-micro/gateway/internal/config"
-	"github.com/xxx-newbee/go-micro/gateway/internal/handler"
-	"github.com/xxx-newbee/go-micro/gateway/internal/svc"
+	"github.com/xxx-newbee/gateway/internal/config"
+	"github.com/xxx-newbee/gateway/internal/handler"
+	"github.com/xxx-newbee/gateway/internal/svc"
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/rest"

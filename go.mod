@@ -1,4 +1,4 @@
-module github.com/xxx-newbee/go-micro/gateway
+module github.com/xxx-newbee/gateway
 
 go 1.24.11
 
@@ -91,8 +91,6 @@ require (
 
 require (
 	github.com/golang-jwt/jwt/v5 v5.3.0
-	github.com/xxx-newbee/go-micro/user v0.1.1
+	github.com/xxx-newbee/user v0.1.2
 	google.golang.org/grpc v1.78.0
 )
-
-replace github.com/xxx-newbee/go-micro/user => ../user
