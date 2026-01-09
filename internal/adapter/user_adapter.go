@@ -37,6 +37,7 @@ func (e *UserClientAdapter) Regist(ctx context.Context, in *types.RegistRequest,
 	return &types.RegistResponse{
 		Username:       protoResp.Username,
 		Nickname:       protoResp.Nickname,
+		WalletAddr:     protoResp.WalletAddr,
 		UserRefferCode: protoResp.UserReferralCode,
 		ReferralCode:   protoResp.ReferralCode,
 	}, nil
@@ -52,10 +53,13 @@ func (e *UserClientAdapter) Login(ctx context.Context, in *types.LoginRequest, o
 		return nil, err
 	}
 	return &types.LoginResponse{
-		UserId:   protoResp.UserId,
-		Username: protoResp.Username,
-		Nickname: protoResp.Nickname,
-		Token:    protoResp.Token,
+		UserId:           protoResp.UserId,
+		Username:         protoResp.Username,
+		Nickname:         protoResp.Nickname,
+		Token:            protoResp.Token,
+		WalletAddr:       protoResp.WalletAddr,
+		UserReferralCode: protoResp.UserReferralCode,
+		ReferralCode:     protoResp.ReferralCode,
 	}, nil
 }
 

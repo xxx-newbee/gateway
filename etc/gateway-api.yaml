@@ -13,7 +13,7 @@ Jwt:
 UserRpcConf:
   Etcd:
     Hosts:
-      - 0.0.0.0:2379
+      - 172.10.0.3:2379
     Key: user.rpc  # 必须和user服务的etcd key一致（user/etc/user.yaml中的Key）
   NonBlock: true   # 非阻塞连接（开发环境推荐）
 

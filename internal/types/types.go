@@ -15,10 +15,13 @@ type LoginRequest struct {
 }
 
 type LoginResponse struct {
-	Token    string `json:"token"`
-	UserId   int64  `json:"user_id"`
-	Username string `json:"username"`
-	Nickname string `json:"nickname"`
+	Token      string `json:"token"`
+	UserId     int64  `json:"user_id"`
+	Username   string `json:"username"`
+	Nickname   string `json:"nickname"`
+	WalletAddr string `json:"walletaddr"`
+	UserReferralCode string `json:"user_referral_code"`
+	ReferralCode     string `json:"referral_code"`
 }
 
 type RegistRequest struct {
