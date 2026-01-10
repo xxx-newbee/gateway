@@ -22,10 +22,3 @@ Limit:
   QPS: 1000
   Burst: 200
   TokenLimit: 5000
-
-# 路由转发（对接RPC服务）
-Routes:
-  - Name: user
-    Method: ANY
-    Path: /api/user/*
-    Dest: user.rpc

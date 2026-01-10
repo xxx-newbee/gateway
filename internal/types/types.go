@@ -3,12 +3,6 @@
 
 package types
 
-import (
-	"context"
-
-	"google.golang.org/grpc"
-)
-
 type LoginRequest struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
@@ -19,7 +13,7 @@ type LoginResponse struct {
 	UserId     int64  `json:"user_id"`
 	Username   string `json:"username"`
 	Nickname   string `json:"nickname"`
-	WalletAddr string `json:"walletaddr"`
+	WalletAddr string `json:"wallet_addr"`
 	UserReferralCode string `json:"user_referral_code"`
 	ReferralCode     string `json:"referral_code"`
 }
@@ -36,24 +30,17 @@ type RegistResponse struct {
 	Username       string `json:"username"`
 	Nickname       string `json:"nickname"`
 	WalletAddr     string `json:"wallet_addr"`
-	UserRefferCode string `json:"user_reffer_code"`
+	UserReferralCode string `json:"user_referral_code"`
 	ReferralCode   string `json:"referral_code"`
 }
 
 
-type GetUserRequest struct {
-}
+type GetUserRequest struct {}
 
 type GetUserResponse struct {
 	Username       string `json:"username"`
 	Nickname       string `json:"nickname"`
 	WalletAddr     string `json:"wallet_addr"`
-	UserRefferCode string `json:"user_reffer_code"`
+	UserReferralCode string `json:"user_referral_code"`
 	ReferralCode   string `json:"referral_code"`
-}
-
-type UserService interface {
-	Regist(context.Context, *RegistRequest, ...grpc.CallOption) (*RegistResponse, error)
-	Login(context.Context, *LoginRequest, ...grpc.CallOption) (*LoginResponse, error)
-	GetUserInfo(context.Context, *GetUserRequest, ...grpc.CallOption) (*GetUserResponse, error)
 }

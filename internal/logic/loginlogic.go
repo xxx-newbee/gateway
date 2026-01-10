@@ -50,7 +50,7 @@ func (l *LoginLogic) Login(req *types.LoginRequest) (*types.LoginResponse, error
 }
 
 func (l *LoginLogic) Register(req *types.RegistRequest) (*types.RegistResponse, error) {
-	resp, err := l.svcCtx.UserService.Regist(l.ctx, req)
+	resp, err := l.svcCtx.UserService.Register(l.ctx, req)
 	if err != nil {
 		return nil, err
 	}

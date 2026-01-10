@@ -20,7 +20,7 @@ func NewUserClientAdapter(rpcClient zrpc.Client) *UserClientAdapter {
 	}
 }
 
-func (e *UserClientAdapter) Regist(ctx context.Context, in *types.RegistRequest, opts ...grpc.CallOption) (*types.RegistResponse, error) {
+func (e *UserClientAdapter) Register(ctx context.Context, in *types.RegistRequest, opts ...grpc.CallOption) (*types.RegistResponse, error) {
 	protoReq := &user.RegisterRequest{
 		Username:     in.Username,
 		Password:     in.Password,
@@ -35,11 +35,11 @@ func (e *UserClientAdapter) Regist(ctx context.Context, in *types.RegistRequest,
 	}
 
 	return &types.RegistResponse{
-		Username:       protoResp.Username,
-		Nickname:       protoResp.Nickname,
-		WalletAddr:     protoResp.WalletAddr,
-		UserRefferCode: protoResp.UserReferralCode,
-		ReferralCode:   protoResp.ReferralCode,
+		Username:         protoResp.Username,
+		Nickname:         protoResp.Nickname,
+		WalletAddr:       protoResp.WalletAddr,
+		UserReferralCode: protoResp.UserReferralCode,
+		ReferralCode:     protoResp.ReferralCode,
 	}, nil
 }
 
@@ -70,10 +70,10 @@ func (e *UserClientAdapter) GetUserInfo(ctx context.Context, in *types.GetUserRe
 		return nil, err
 	}
 	return &types.GetUserResponse{
-		Username:       protoResp.Username,
-		Nickname:       protoResp.Nickname,
-		WalletAddr:     protoResp.WalletAddr,
-		UserRefferCode: protoResp.UserReferralCode,
-		ReferralCode:   protoResp.ReferralCode,
+		Username:         protoResp.Username,
+		Nickname:         protoResp.Nickname,
+		WalletAddr:       protoResp.WalletAddr,
+		UserReferralCode: protoResp.UserReferralCode,
+		ReferralCode:     protoResp.ReferralCode,
 	}, nil
 }
