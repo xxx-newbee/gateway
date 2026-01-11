@@ -1,11 +1,14 @@
-// gateway/internal/logic/loginlogic.go
-package logic
+// Code scaffolded by goctl. Safe to edit.
+// goctl 1.9.2
+
+package user
 
 import (
 	"context"
 
 	"github.com/xxx-newbee/gateway/internal/svc"
 	"github.com/xxx-newbee/gateway/internal/types"
+
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -23,11 +26,10 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic 
 	}
 }
 
-func (l *LoginLogic) Login(req *types.LoginRequest) (*types.LoginResponse, error) {
-	var resp *types.LoginResponse
+func (l *LoginLogic) Login(req *types.LoginRequest) (resp *types.LoginResponse, err error) {
 
-	// 熔断器保护， 失败时降级
-	err := l.svcCtx.UserBreaker.DoWithAcceptable(func() error {
+	// 熔断器保护
+	err = l.svcCtx.UserBreaker.DoWithAcceptable(func() error {
 		var innerErr error
 		resp, innerErr = l.svcCtx.UserService.Login(l.ctx, req)
 		return innerErr
@@ -36,21 +38,6 @@ func (l *LoginLogic) Login(req *types.LoginRequest) (*types.LoginResponse, error
 		return err != nil && context.DeadlineExceeded == err
 	})
 
-	if err != nil {
-		// 降级处理
-		return &types.LoginResponse{
-			Token:    "",
-			UserId:   0,
-			Username: "匿名用户",
-			Nickname: "匿名",
-		}, nil
-	}
-
-	return resp, nil
-}
-
-func (l *LoginLogic) Register(req *types.RegistRequest) (*types.RegistResponse, error) {
-	resp, err := l.svcCtx.UserService.Register(l.ctx, req)
 	if err != nil {
 		return nil, err
 	}

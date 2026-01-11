@@ -94,3 +94,5 @@ require (
 	github.com/xxx-newbee/user v0.1.2
 	google.golang.org/grpc v1.78.0
 )
+
+replace github.com/xxx-newbee/user => ../user

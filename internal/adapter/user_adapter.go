@@ -63,17 +63,21 @@ func (e *UserClientAdapter) Login(ctx context.Context, in *types.LoginRequest, o
 	}, nil
 }
 
-func (e *UserClientAdapter) GetUserInfo(ctx context.Context, in *types.GetUserRequest, opts ...grpc.CallOption) (*types.GetUserResponse, error) {
+func (e *UserClientAdapter) GetUserInfo(ctx context.Context, opts ...grpc.CallOption) (*types.GetUserInfoResponse, error) {
 	protoReq := &user.GetUserInfoRequest{}
 	protoResp, err := e.cli.GetUserInfo(ctx, protoReq)
 	if err != nil {
 		return nil, err
 	}
-	return &types.GetUserResponse{
+	return &types.GetUserInfoResponse{
 		Username:         protoResp.Username,
 		Nickname:         protoResp.Nickname,
 		WalletAddr:       protoResp.WalletAddr,
 		UserReferralCode: protoResp.UserReferralCode,
 		ReferralCode:     protoResp.ReferralCode,
 	}, nil
+}
+
+func (e *UserClientAdapter) UpdateUserInfo(ctx context.Context, in *types.UpdateUserInfoReqest, opts ...grpc.CallOption) (*types.UpdateUserInfoResponse, error) {
+	return nil, nil
 }

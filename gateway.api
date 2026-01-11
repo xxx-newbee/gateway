@@ -1,57 +1,82 @@
 syntax = "v1"
 
-info(
-	title: "go-micro gateway service"
-	desc: ""
-	author: "william"
-	email: "huang_learn@163.com"
+info (
+	title:   "go-micro no auth service"
+	desc:    ""
+	author:  "william"
+	email:   "huang_learn@163.com"
 	version: "v1.0.0"
 )
 
-
 type (
-	LoginRequest {
-		Username string `json:"username" path:"username, required"`
-		Password string `json:"password" path:"password, required"`
+	ErrResponse {
+		Status string `json:"status"`
+		Msg    string `json:"message"`
 	}
-
-	LoginResponse {
-		Token    string `json:"token"`
-		UserId   int64  `json:"user_id"`
+	LoginRequest {
 		Username string `json:"username"`
-		Nickname string `json:"nickname"`
+		Password string `json:"password"`
+	}
+	LoginResponse {
+		Token            string `json:"token"`
+		UserId           int64  `json:"user_id"`
+		Username         string `json:"username"`
+		Nickname         string `json:"nickname"`
+		WalletAddr       string `json:"wallet_addr"`
+		UserReferralCode string `json:"user_referral_code"`
+		ReferralCode     string `json:"referral_code"`
 	}
 	RegistRequest {
-    	Username string `json:"username" path:"username, required"`
-    	Password string `json:"password" path:"password, required"`
-    	Nickname string `json:"nickname"`
-    	WalletAddr string `json:"wallet_addr"`
-    	ReferralCode string `json:"referral_code"`
+		Username     string `json:"username"`
+		Password     string `json:"password"`
+		Nickname     string `json:"nickname"`
+		WalletAddr   string `json:"wallet_addr"`
+		ReferralCode string `json:"referral_code"`
 	}
-	RegistRespone {
-    	Username       string `json:"username"`
-    	Nickname       string `json:"nickname"`
-   		WalletAddr     string `json:"wallet_addr"`
-   		UserRefferCode string `json:"user_reffer_code"`
-   		ReferralCode   string `json:"referral_code"`
+	RegistResponse {
+		Username         string `json:"username"`
+		Nickname         string `json:"nickname"`
+		WalletAddr       string `json:"wallet_addr"`
+		UserReferralCode string `json:"user_referral_code"`
+		ReferralCode     string `json:"referral_code"`
 	}
-	GetUserRequest {}
-
- 	GetUserRespone {
-    	Username       string `json:"username"`
-    	Nickname       string `json:"nickname"`
-   		WalletAddr     string `json:"wallet_addr"`
-   		UserRefferCode string `json:"user_reffer_code"`
-   		ReferralCode   string `json:"referral_code"`
+	GetUserInfoResponse {
+		Username         string `json:"username"`
+		Nickname         string `json:"nickname"`
+		WalletAddr       string `json:"wallet_addr"`
+		UserReferralCode string `json:"user_referral_code"`
+		ReferralCode     string `json:"referral_code"`
 	}
+	UpdateUserInfoReqest {
+		Nickname   string `json:"nickname"`
+		Passward   string `json:"password"`
+		WalletAddr string `json:"wallet_addr"`
+	}
+	UpdateUserInfoResponse  {}
 )
 
+@server (
+	group:      user
+	middleware: RequestTimer,RateLimiter
+)
 service gateway-api {
 	@handler RegisterHandler
-	post /api/user/register (RegistRequest) returns (RegistRespone)
+	post /register (RegistRequest) returns (RegistResponse)
+
 	@handler LoginHandler
-	post /api/user/login (LoginRequest) returns (LoginResponse)
+	post /login (LoginRequest) returns (LoginResponse)
+}
+
+@server (
+	prefix:     /v1
+	group:      user
+	middleware: JwtAuth,RateLimiter
+)
+service gateway-api {
 	@handler GetUserInfoHandler
-	get /api/user/info (GetUserRequest) returns (GetUserRespone)
+	get /info returns (GetUserInfoResponse)
+
+	@handler UpdateUserInfoHandler
+	post /update (UpdateUserInfoReqest)
 }
 

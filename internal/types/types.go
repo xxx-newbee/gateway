@@ -3,44 +3,55 @@
 
 package types
 
+type ErrResponse struct {
+	Status string `json:"status"`
+	Msg    string `json:"message"`
+}
+
+type GetUserInfoResponse struct {
+	Username         string `json:"username"`
+	Nickname         string `json:"nickname"`
+	WalletAddr       string `json:"wallet_addr"`
+	UserReferralCode string `json:"user_referral_code"`
+	ReferralCode     string `json:"referral_code"`
+}
+
 type LoginRequest struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 }
 
 type LoginResponse struct {
-	Token      string `json:"token"`
-	UserId     int64  `json:"user_id"`
-	Username   string `json:"username"`
-	Nickname   string `json:"nickname"`
-	WalletAddr string `json:"wallet_addr"`
+	Token            string `json:"token"`
+	UserId           int64  `json:"user_id"`
+	Username         string `json:"username"`
+	Nickname         string `json:"nickname"`
+	WalletAddr       string `json:"wallet_addr"`
 	UserReferralCode string `json:"user_referral_code"`
 	ReferralCode     string `json:"referral_code"`
 }
 
 type RegistRequest struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
-	Nickname string `json:"nickname"`
-	WalletAddr string `json:"wallet_addr"`
+	Username     string `json:"username"`
+	Password     string `json:"password"`
+	Nickname     string `json:"nickname"`
+	WalletAddr   string `json:"wallet_addr"`
 	ReferralCode string `json:"referral_code"`
 }
 
 type RegistResponse struct {
-	Username       string `json:"username"`
-	Nickname       string `json:"nickname"`
-	WalletAddr     string `json:"wallet_addr"`
+	Username         string `json:"username"`
+	Nickname         string `json:"nickname"`
+	WalletAddr       string `json:"wallet_addr"`
 	UserReferralCode string `json:"user_referral_code"`
-	ReferralCode   string `json:"referral_code"`
+	ReferralCode     string `json:"referral_code"`
 }
 
+type UpdateUserInfoReqest struct {
+	Nickname   string `json:"nickname"`
+	Passward   string `json:"password"`
+	WalletAddr string `json:"wallet_addr"`
+}
 
-type GetUserRequest struct {}
-
-type GetUserResponse struct {
-	Username       string `json:"username"`
-	Nickname       string `json:"nickname"`
-	WalletAddr     string `json:"wallet_addr"`
-	UserReferralCode string `json:"user_referral_code"`
-	ReferralCode   string `json:"referral_code"`
+type UpdateUserInfoResponse struct {
 }

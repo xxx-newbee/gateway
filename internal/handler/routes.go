@@ -6,7 +6,7 @@ package handler
 import (
 	"net/http"
 
-	"github.com/xxx-newbee/gateway/internal/middleware"
+	user "github.com/xxx-newbee/gateway/internal/handler/user"
 	"github.com/xxx-newbee/gateway/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
@@ -14,22 +14,39 @@ import (
 
 func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 	server.AddRoutes(
-		[]rest.Route{
-			{
-				Method:  http.MethodPost,
-				Path:    "/api/user/register",
-				Handler: (RegisterHandler(serverCtx)),
-			},
-			{
-				Method:  http.MethodPost,
-				Path:    "/api/user/login",
-				Handler: (LoginHandler(serverCtx)),
-			},
-			{
-				Method:  http.MethodGet,
-				Path:    "/api/user/info",
-				Handler: middleware.AuthMiddleware(serverCtx)(GetUserInfoHandler(serverCtx)),
-			},
-		},
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.RequestTimer, serverCtx.RateLimiter},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/login",
+					Handler: user.LoginHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/register",
+					Handler: user.RegisterHandler(serverCtx),
+				},
+			}...,
+		),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.JwtAuth, serverCtx.RateLimiter},
+			[]rest.Route{
+				{
+					Method:  http.MethodGet,
+					Path:    "/info",
+					Handler: user.GetUserInfoHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/update",
+					Handler: user.UpdateUserInfoHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/v1"),
 	)
 }

@@ -9,5 +9,6 @@ import (
 type UserService interface {
 	Register(context.Context, *RegistRequest, ...grpc.CallOption) (*RegistResponse, error)
 	Login(context.Context, *LoginRequest, ...grpc.CallOption) (*LoginResponse, error)
-	GetUserInfo(context.Context, *GetUserRequest, ...grpc.CallOption) (*GetUserResponse, error)
+	GetUserInfo(context.Context, ...grpc.CallOption) (*GetUserInfoResponse, error)
+	UpdateUserInfo(context.Context, *UpdateUserInfoReqest, ...grpc.CallOption) (*UpdateUserInfoResponse, error)
 }
