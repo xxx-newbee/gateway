@@ -9,25 +9,27 @@ import (
 
 	"github.com/xxx-newbee/gateway/internal/svc"
 	"github.com/xxx-newbee/gateway/internal/types"
-	"github.com/zeromicro/go-zero/core/logx"
 	"google.golang.org/grpc/metadata"
+
+	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type UpdateUserInfoLogic struct {
+type ChangePasswordLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewUpdateUserInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UpdateUserInfoLogic {
-	return &UpdateUserInfoLogic{
+func NewChangePasswordLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ChangePasswordLogic {
+	return &ChangePasswordLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *UpdateUserInfoLogic) UpdateUserInfo(req *types.UpdateUserInfoReqest) (*types.UpdateResponse, error) {
+func (l *ChangePasswordLogic) ChangePassword(req *types.ChangePasswordRequest) (resp *types.UpdateResponse, err error) {
+	// todo: add your logic here and delete this line
 	tokenStr, ok := l.ctx.Value("Authorization").(string)
 	if !ok || tokenStr == "" {
 		return nil, errors.New("authorization token not found in context")
@@ -36,18 +38,17 @@ func (l *UpdateUserInfoLogic) UpdateUserInfo(req *types.UpdateUserInfoReqest) (*
 	md := metadata.Pairs("Authorization", tokenStr)
 	l.ctx = metadata.NewOutgoingContext(l.ctx, md)
 
-	var resp *types.UpdateResponse
-	err := l.svcCtx.UserBreaker.DoWithAcceptable(func() error {
+	err = l.svcCtx.UserBreaker.DoWithAcceptable(func() error {
 		var innerErr error
-		resp, innerErr = l.svcCtx.UserService.UpdateUserInfo(l.ctx, req)
+		resp, innerErr = l.svcCtx.UserService.ChangePassword(l.ctx, req)
 		return innerErr
 	}, func(err error) bool {
 		return err != nil && context.DeadlineExceeded == err
 	})
 
 	if err != nil {
-		return &types.UpdateResponse{Status: "fail", Msg: err.Error()}, err
+		return &types.UpdateResponse{Status: "fail", Msg: err.Error()}, nil
 	}
 
-	return resp, nil
+	return
 }

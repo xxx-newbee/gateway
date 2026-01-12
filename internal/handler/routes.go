@@ -36,6 +36,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.JwtAuth, serverCtx.RateLimiter},
 			[]rest.Route{
 				{
+					Method:  http.MethodPost,
+					Path:    "/chpasswd",
+					Handler: user.ChangePasswordHandler(serverCtx),
+				},
+				{
 					Method:  http.MethodGet,
 					Path:    "/info",
 					Handler: user.GetUserInfoHandler(serverCtx),
