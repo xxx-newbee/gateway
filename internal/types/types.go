@@ -3,6 +3,11 @@
 
 package types
 
+type ChangePasswordRequest struct {
+	Old string `json:"old"`
+	New string `json:"new"`
+}
+
 type ErrResponse struct {
 	Status string `json:"status"`
 	Msg    string `json:"message"`
@@ -47,11 +52,12 @@ type RegistResponse struct {
 	ReferralCode     string `json:"referral_code"`
 }
 
-type UpdateUserInfoReqest struct {
-	Nickname   string `json:"nickname"`
-	Passward   string `json:"password"`
-	WalletAddr string `json:"wallet_addr"`
+type UpdateResponse struct {
+	Status string `json:"status"`
+	Msg    string `json:"message"`
 }
 
-type UpdateUserInfoResponse struct {
+type UpdateUserInfoReqest struct {
+	Nickname   string `json:"nickname"`
+	WalletAddr string `json:"wallet_addr"`
 }

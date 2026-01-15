@@ -49,10 +49,16 @@ type (
 	}
 	UpdateUserInfoReqest {
 		Nickname   string `json:"nickname"`
-		Passward   string `json:"password"`
 		WalletAddr string `json:"wallet_addr"`
 	}
-	UpdateUserInfoResponse  {}
+	ChangePasswordRequest {
+		Old string `json:"old"`
+		New string `json:"new"`
+	}
+	UpdateResponse {
+		Status string `json:"status"`
+		Msg    string `json:"message"`
+	}
 )
 
 @server (
@@ -77,6 +83,9 @@ service gateway-api {
 	get /info returns (GetUserInfoResponse)
 
 	@handler UpdateUserInfoHandler
-	post /update (UpdateUserInfoReqest)
+	post /update (UpdateUserInfoReqest) returns (UpdateResponse)
+
+	@handler ChangePasswordHandler
+	post /chpasswd (ChangePasswordRequest) returns (UpdateResponse)
 }
 

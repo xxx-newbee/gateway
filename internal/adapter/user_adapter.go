@@ -5,18 +5,18 @@ import (
 
 	"github.com/xxx-newbee/gateway/internal/types"
 	"github.com/xxx-newbee/user/user"
-	"github.com/xxx-newbee/user/userclient"
+	"github.com/xxx-newbee/user/user_client"
 	"github.com/zeromicro/go-zero/zrpc"
 	"google.golang.org/grpc"
 )
 
 type UserClientAdapter struct {
-	cli userclient.User
+	cli user_client.User
 }
 
 func NewUserClientAdapter(rpcClient zrpc.Client) *UserClientAdapter {
 	return &UserClientAdapter{
-		cli: userclient.NewUser(rpcClient),
+		cli: user_client.NewUser(rpcClient),
 	}
 }
 
@@ -78,6 +78,34 @@ func (e *UserClientAdapter) GetUserInfo(ctx context.Context, opts ...grpc.CallOp
 	}, nil
 }
 
-func (e *UserClientAdapter) UpdateUserInfo(ctx context.Context, in *types.UpdateUserInfoReqest, opts ...grpc.CallOption) (*types.UpdateUserInfoResponse, error) {
-	return nil, nil
+func (e *UserClientAdapter) UpdateUserInfo(ctx context.Context, in *types.UpdateUserInfoReqest, opts ...grpc.CallOption) (*types.UpdateResponse, error) {
+	protoReq := &user.UpdateUserInfoReqest{
+		Nickname:   in.Nickname,
+		WalletAddr: in.WalletAddr,
+	}
+	protoResp, err := e.cli.UpdateUserInfo(ctx, protoReq)
+
+	if err != nil {
+		return nil, err
+	}
+	return &types.UpdateResponse{
+		Status: protoResp.Status,
+		Msg:    protoResp.Msg,
+	}, nil
+}
+
+func (e *UserClientAdapter) ChangePassword(ctx context.Context, in *types.ChangePasswordRequest, opts ...grpc.CallOption) (*types.UpdateResponse, error) {
+	protoReq := &user.ChangePassWdRequest{
+		Old: in.Old,
+		New: in.New,
+	}
+	protoResp, err := e.cli.ChangePassword(ctx, protoReq)
+
+	if err != nil {
+		return nil, err
+	}
+	return &types.UpdateResponse{
+		Status: protoResp.Status,
+		Msg:    protoResp.Msg,
+	}, nil
 }

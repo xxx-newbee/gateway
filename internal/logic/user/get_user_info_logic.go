@@ -48,10 +48,7 @@ func (l *GetUserInfoLogic) GetUserInfo() (*types.GetUserInfoResponse, error) {
 	})
 
 	if err != nil {
-		return &types.GetUserInfoResponse{
-			Username: "匿名用户",
-			Nickname: "匿名",
-		}, nil
+		return nil, err
 	}
 
 	return resp, nil
