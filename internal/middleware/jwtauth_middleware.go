@@ -4,7 +4,6 @@
 package middleware
 
 import (
-	"context"
 	"errors"
 	"net/http"
 	"strings"
@@ -65,16 +64,11 @@ func (m *JwtAuthMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc {
 			httpx.Error(w, errors.New("无效的token，请重新登录"))
 			return
 		}
-		claims, ok := token.Claims.(*JWTClaims)
+		_, ok := token.Claims.(*JWTClaims)
 		if !ok {
 			httpx.Error(w, errors.New("无法适配token，请重新登录"))
 			return
 		}
-		// 请求数据写入上下文
-		ctx := context.WithValue(r.Context(), "userID", claims.UserID)
-		ctx = context.WithValue(ctx, "username", claims.Username)
-		ctx = context.WithValue(ctx, "Authorization", tokenStr)
-		r = r.WithContext(ctx)
 
 		next(w, r)
 	}

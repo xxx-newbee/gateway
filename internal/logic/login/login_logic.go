@@ -1,14 +1,13 @@
 // Code scaffolded by goctl. Safe to edit.
 // goctl 1.9.2
 
-package user
+package login
 
 import (
 	"context"
 
 	"github.com/xxx-newbee/gateway/internal/svc"
 	"github.com/xxx-newbee/gateway/internal/types"
-
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -26,10 +25,10 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic 
 	}
 }
 
-func (l *LoginLogic) Login(req *types.LoginRequest) (resp *types.LoginResponse, err error) {
-
+func (l *LoginLogic) Login(req *types.LoginRequest) (*types.BaseResponse, error) {
+	var resp *types.LoginResponse
 	// 熔断器保护
-	err = l.svcCtx.UserBreaker.DoWithAcceptable(func() error {
+	err := l.svcCtx.UserBreaker.DoWithAcceptable(func() error {
 		var innerErr error
 		resp, innerErr = l.svcCtx.UserService.Login(l.ctx, req)
 		return innerErr
@@ -39,8 +38,15 @@ func (l *LoginLogic) Login(req *types.LoginRequest) (resp *types.LoginResponse, 
 	})
 
 	if err != nil {
-		return nil, err
+		return &types.BaseResponse{
+			Code: 500,
+			Msg:  err.Error(),
+		}, nil
 	}
 
-	return resp, nil
+	return &types.BaseResponse{
+		Code: 200,
+		Msg:  "welcome login",
+		Data: resp,
+	}, nil
 }

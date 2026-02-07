@@ -3,7 +3,12 @@ Host: 0.0.0.0
 Port: 8888
 Mode: dev
 
-Middleware:
+Cors:
+  AllowOrigins:
+    - "http://localhost:5173"
+  AllowCredentials: true
+  MaxAge: 86400
+
 
 # 自定义JWT配置
 Jwt:

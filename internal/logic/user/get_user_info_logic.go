@@ -5,12 +5,9 @@ package user
 
 import (
 	"context"
-	"errors"
 
 	"github.com/xxx-newbee/gateway/internal/svc"
 	"github.com/xxx-newbee/gateway/internal/types"
-	"google.golang.org/grpc/metadata"
-
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -28,15 +25,15 @@ func NewGetUserInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetUs
 	}
 }
 
-func (l *GetUserInfoLogic) GetUserInfo() (*types.GetUserInfoResponse, error) {
+func (l *GetUserInfoLogic) GetUserInfo() (*types.BaseResponse, error) {
 
-	tokenStr, ok := l.ctx.Value("Authorization").(string)
-	if !ok || tokenStr == "" {
-		return nil, errors.New("authorization token not found in context")
-	}
-
-	md := metadata.Pairs("Authorization", tokenStr)
-	l.ctx = metadata.NewOutgoingContext(l.ctx, md)
+	//tokenStr, ok := l.ctx.Value("Authorization").(string)
+	//if !ok || tokenStr == "" {
+	//	return nil, errors.New("authorization token not found in context")
+	//}
+	//
+	//md := metadata.Pairs("Authorization", tokenStr)
+	//l.ctx = metadata.NewOutgoingContext(l.ctx, md)
 
 	var resp *types.GetUserInfoResponse
 	err := l.svcCtx.UserBreaker.DoWithAcceptable(func() error {
@@ -48,8 +45,15 @@ func (l *GetUserInfoLogic) GetUserInfo() (*types.GetUserInfoResponse, error) {
 	})
 
 	if err != nil {
-		return nil, err
+		return &types.BaseResponse{
+			Code: 500,
+			Msg:  err.Error(),
+		}, nil
 	}
 
-	return resp, nil
+	return &types.BaseResponse{
+		Code: 200,
+		Msg:  "ok",
+		Data: resp,
+	}, nil
 }

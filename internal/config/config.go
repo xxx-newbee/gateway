@@ -16,4 +16,9 @@ type Config struct {
 		AccessExpire  int64
 		RefreshExpire int64
 	}
+	Cors struct {
+		AllowOrigins     []string
+		AllowCredentials bool
+		MaxAge           int
+	}
 }

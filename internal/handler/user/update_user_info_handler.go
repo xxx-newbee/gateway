@@ -20,11 +20,10 @@ func UpdateUserInfoHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 			return
 		}
 
-		l := user.NewUpdateUserInfoLogic(r.Context(), svcCtx)
-		resp, err := l.UpdateUserInfo(&req)
+		resp, err := user.NewUpdateUserInfoLogic(r.Context(), svcCtx).UpdateUserInfo(&req)
 
 		if err != nil {
-			httpx.Error(w, err)
+			httpx.ErrorCtx(r.Context(), w, err)
 		} else {
 			httpx.OkJsonCtx(r.Context(), w, resp)
 		}

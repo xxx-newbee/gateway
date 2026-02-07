@@ -1,43 +1,36 @@
 // Code scaffolded by goctl. Safe to edit.
 // goctl 1.9.2
 
-package user
+package login
 
 import (
 	"context"
-	"errors"
 
 	"github.com/xxx-newbee/gateway/internal/svc"
 	"github.com/xxx-newbee/gateway/internal/types"
+
 	"github.com/zeromicro/go-zero/core/logx"
-	"google.golang.org/grpc/metadata"
 )
 
-type UpdateUserInfoLogic struct {
+type RegisterLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewUpdateUserInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UpdateUserInfoLogic {
-	return &UpdateUserInfoLogic{
+func NewRegisterLogic(ctx context.Context, svcCtx *svc.ServiceContext) *RegisterLogic {
+	return &RegisterLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *UpdateUserInfoLogic) UpdateUserInfo(req *types.UpdateUserInfoReqest) (*types.BaseResponse, error) {
-	tokenStr, ok := l.ctx.Value("Authorization").(string)
-	if !ok || tokenStr == "" {
-		return nil, errors.New("authorization token not found in context")
-	}
-
-	md := metadata.Pairs("Authorization", tokenStr)
-	l.ctx = metadata.NewOutgoingContext(l.ctx, md)
-
+func (l *RegisterLogic) Register(req *types.RegistRequest) (*types.BaseResponse, error) {
+	var resp *types.RegistResponse
 	err := l.svcCtx.UserBreaker.DoWithAcceptable(func() error {
-		innerErr := l.svcCtx.UserService.UpdateUserInfo(l.ctx, req)
+		var innerErr error
+		resp, innerErr = l.svcCtx.UserService.Register(l.ctx, req)
 		return innerErr
 	}, func(err error) bool {
 		return err != nil && context.DeadlineExceeded == err
@@ -53,5 +46,7 @@ func (l *UpdateUserInfoLogic) UpdateUserInfo(req *types.UpdateUserInfoReqest) (*
 	return &types.BaseResponse{
 		Code: 200,
 		Msg:  "ok",
+		Data: resp,
 	}, nil
+
 }

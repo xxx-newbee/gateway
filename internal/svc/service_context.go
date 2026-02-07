@@ -20,6 +20,7 @@ type ServiceContext struct {
 	JwtAuth      rest.Middleware
 	RateLimiter  rest.Middleware
 	RequestTimer rest.Middleware
+	Header       rest.Middleware
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -34,5 +35,6 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		JwtAuth:      middleware.NewJwtAuthMiddleware(c.JWT.Secret, c.JWT.AccessExpire, c.JWT.RefreshExpire).Handle,
 		RateLimiter:  middleware.NewRateLimiterMiddleware().Handle,
 		RequestTimer: middleware.NewRequestTimerMiddleware().Handle,
+		Header:       middleware.NewHeaderMiddleware().Handle,
 	}
 }

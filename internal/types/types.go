@@ -3,14 +3,20 @@
 
 package types
 
+type BaseResponse struct {
+	Code int         `json:"code"`
+	Msg  string      `json:"msg"`
+	Data interface{} `json:"data,omitempty"`
+}
+
+type CaptchaResponse struct {
+	CaptchaId string `json:"captcha_id"`
+	ImgBase64 string `json:"img_base64"`
+}
+
 type ChangePasswordRequest struct {
 	Old string `json:"old"`
 	New string `json:"new"`
-}
-
-type ErrResponse struct {
-	Status string `json:"status"`
-	Msg    string `json:"message"`
 }
 
 type GetUserInfoResponse struct {
@@ -22,8 +28,10 @@ type GetUserInfoResponse struct {
 }
 
 type LoginRequest struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
+	Username    string `json:"username"`
+	Password    string `json:"password"`
+	CaptchaId   string `json:"captcha_id"`
+	CaptchaCode string `json:"captcha_code"`
 }
 
 type LoginResponse struct {
@@ -37,11 +45,13 @@ type LoginResponse struct {
 }
 
 type RegistRequest struct {
-	Username     string `json:"username"`
-	Password     string `json:"password"`
-	Nickname     string `json:"nickname"`
+	Username     string `json:"username" validate:"required,min=3,max=12"`
+	Password     string `json:"password" validate:"required,min=6"`
+	Nickname     string `json:"nickname" validate:"max=16"`
 	WalletAddr   string `json:"wallet_addr"`
 	ReferralCode string `json:"referral_code"`
+	CaptchaId    string `json:"captcha_id"`
+	CaptchaCode  string `json:"captcha_code"`
 }
 
 type RegistResponse struct {
@@ -50,11 +60,6 @@ type RegistResponse struct {
 	WalletAddr       string `json:"wallet_addr"`
 	UserReferralCode string `json:"user_referral_code"`
 	ReferralCode     string `json:"referral_code"`
-}
-
-type UpdateResponse struct {
-	Status string `json:"status"`
-	Msg    string `json:"message"`
 }
 
 type UpdateUserInfoReqest struct {

@@ -6,6 +6,7 @@ package handler
 import (
 	"net/http"
 
+	login "github.com/xxx-newbee/gateway/internal/handler/login"
 	user "github.com/xxx-newbee/gateway/internal/handler/user"
 	"github.com/xxx-newbee/gateway/internal/svc"
 
@@ -15,17 +16,22 @@ import (
 func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.RequestTimer, serverCtx.RateLimiter},
+			[]rest.Middleware{serverCtx.RequestTimer, serverCtx.RateLimiter, serverCtx.Header},
 			[]rest.Route{
+				{
+					Method:  http.MethodGet,
+					Path:    "/captcha",
+					Handler: login.GenerateCaptchaHandler(serverCtx),
+				},
 				{
 					Method:  http.MethodPost,
 					Path:    "/login",
-					Handler: user.LoginHandler(serverCtx),
+					Handler: login.LoginHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodPost,
 					Path:    "/register",
-					Handler: user.RegisterHandler(serverCtx),
+					Handler: login.RegisterHandler(serverCtx),
 				},
 			}...,
 		),
@@ -33,7 +39,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.JwtAuth, serverCtx.RateLimiter},
+			[]rest.Middleware{serverCtx.JwtAuth, serverCtx.RateLimiter, serverCtx.Header},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,

@@ -20,8 +20,8 @@ func ChangePasswordHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 			return
 		}
 
-		l := user.NewChangePasswordLogic(r.Context(), svcCtx)
-		resp, err := l.ChangePassword(&req)
+		resp, err := user.NewChangePasswordLogic(r.Context(), svcCtx).ChangePassword(&req)
+
 		if err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 		} else {

@@ -27,6 +27,8 @@ func (e *UserClientAdapter) Register(ctx context.Context, in *types.RegistReques
 		Nickname:     in.Nickname,
 		WalletAddr:   in.WalletAddr,
 		ReferralCode: in.ReferralCode,
+		CaptchaId:    in.CaptchaId,
+		CaptchaCode:  in.CaptchaCode,
 	}
 
 	protoResp, err := e.cli.Register(ctx, protoReq)
@@ -45,8 +47,10 @@ func (e *UserClientAdapter) Register(ctx context.Context, in *types.RegistReques
 
 func (e *UserClientAdapter) Login(ctx context.Context, in *types.LoginRequest, opts ...grpc.CallOption) (*types.LoginResponse, error) {
 	protoReq := &user.LoginRequest{
-		Username: in.Username,
-		Password: in.Password,
+		Username:    in.Username,
+		Password:    in.Password,
+		CaptchaId:   in.CaptchaId,
+		CaptchaCode: in.CaptchaCode,
 	}
 	protoResp, err := e.cli.Login(ctx, protoReq)
 	if err != nil {
@@ -64,7 +68,7 @@ func (e *UserClientAdapter) Login(ctx context.Context, in *types.LoginRequest, o
 }
 
 func (e *UserClientAdapter) GetUserInfo(ctx context.Context, opts ...grpc.CallOption) (*types.GetUserInfoResponse, error) {
-	protoReq := &user.GetUserInfoRequest{}
+	protoReq := &user.Empty{}
 	protoResp, err := e.cli.GetUserInfo(ctx, protoReq)
 	if err != nil {
 		return nil, err
@@ -78,34 +82,33 @@ func (e *UserClientAdapter) GetUserInfo(ctx context.Context, opts ...grpc.CallOp
 	}, nil
 }
 
-func (e *UserClientAdapter) UpdateUserInfo(ctx context.Context, in *types.UpdateUserInfoReqest, opts ...grpc.CallOption) (*types.UpdateResponse, error) {
+func (e *UserClientAdapter) UpdateUserInfo(ctx context.Context, in *types.UpdateUserInfoReqest, opts ...grpc.CallOption) error {
 	protoReq := &user.UpdateUserInfoReqest{
 		Nickname:   in.Nickname,
 		WalletAddr: in.WalletAddr,
 	}
-	protoResp, err := e.cli.UpdateUserInfo(ctx, protoReq)
+	_, err := e.cli.UpdateUserInfo(ctx, protoReq)
 
-	if err != nil {
-		return nil, err
-	}
-	return &types.UpdateResponse{
-		Status: protoResp.Status,
-		Msg:    protoResp.Msg,
-	}, nil
+	return err
 }
 
-func (e *UserClientAdapter) ChangePassword(ctx context.Context, in *types.ChangePasswordRequest, opts ...grpc.CallOption) (*types.UpdateResponse, error) {
+func (e *UserClientAdapter) ChangePassword(ctx context.Context, in *types.ChangePasswordRequest, opts ...grpc.CallOption) error {
 	protoReq := &user.ChangePassWdRequest{
 		Old: in.Old,
 		New: in.New,
 	}
-	protoResp, err := e.cli.ChangePassword(ctx, protoReq)
+	_, err := e.cli.ChangePassword(ctx, protoReq)
 
+	return err
+}
+
+func (e *UserClientAdapter) GenerateCaptcha(ctx context.Context, opts ...grpc.CallOption) (*types.CaptchaResponse, error) {
+	protoResp, err := e.cli.GenerateCaptcha(ctx, &user.Empty{})
 	if err != nil {
 		return nil, err
 	}
-	return &types.UpdateResponse{
-		Status: protoResp.Status,
-		Msg:    protoResp.Msg,
+	return &types.CaptchaResponse{
+		CaptchaId: protoResp.CaptchaId,
+		ImgBase64: protoResp.ImgBase64,
 	}, nil
 }

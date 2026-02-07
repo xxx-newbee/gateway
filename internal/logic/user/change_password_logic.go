@@ -28,7 +28,7 @@ func NewChangePasswordLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ch
 	}
 }
 
-func (l *ChangePasswordLogic) ChangePassword(req *types.ChangePasswordRequest) (resp *types.UpdateResponse, err error) {
+func (l *ChangePasswordLogic) ChangePassword(req *types.ChangePasswordRequest) (*types.BaseResponse, error) {
 	// todo: add your logic here and delete this line
 	tokenStr, ok := l.ctx.Value("Authorization").(string)
 	if !ok || tokenStr == "" {
@@ -38,17 +38,17 @@ func (l *ChangePasswordLogic) ChangePassword(req *types.ChangePasswordRequest) (
 	md := metadata.Pairs("Authorization", tokenStr)
 	l.ctx = metadata.NewOutgoingContext(l.ctx, md)
 
-	err = l.svcCtx.UserBreaker.DoWithAcceptable(func() error {
-		var innerErr error
-		resp, innerErr = l.svcCtx.UserService.ChangePassword(l.ctx, req)
-		return innerErr
-	}, func(err error) bool {
-		return err != nil && context.DeadlineExceeded == err
-	})
+	err := l.svcCtx.UserService.ChangePassword(l.ctx, req)
 
 	if err != nil {
-		return &types.UpdateResponse{Status: "fail", Msg: err.Error()}, nil
+		return &types.BaseResponse{
+			Code: 500,
+			Msg:  err.Error(),
+		}, nil
 	}
 
-	return
+	return &types.BaseResponse{
+		Code: 200,
+		Msg:  "ok",
+	}, nil
 }

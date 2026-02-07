@@ -9,13 +9,16 @@ info (
 )
 
 type (
-	ErrResponse {
-		Status string `json:"status"`
-		Msg    string `json:"message"`
+	BaseResponse {
+		Code int         `json:"code"`
+		Msg  string      `json:"msg"`
+		Data interface{} `json:"data,omitempty"`
 	}
 	LoginRequest {
-		Username string `json:"username"`
-		Password string `json:"password"`
+		Username    string `json:"username"`
+		Password    string `json:"password"`
+		CaptchaId   string `json:"captcha_id"`
+		CaptchaCode string `json:"captcha_code"`
 	}
 	LoginResponse {
 		Token            string `json:"token"`
@@ -27,11 +30,13 @@ type (
 		ReferralCode     string `json:"referral_code"`
 	}
 	RegistRequest {
-		Username     string `json:"username"`
-		Password     string `json:"password"`
-		Nickname     string `json:"nickname"`
+		Username     string `json:"username" validate:"required,min=3,max=12"`
+		Password     string `json:"password" validate:"required,min=6"`
+		Nickname     string `json:"nickname" validate:"max=16"`
 		WalletAddr   string `json:"wallet_addr"`
 		ReferralCode string `json:"referral_code"`
+		CaptchaId    string `json:"captcha_id"`
+		CaptchaCode  string `json:"captcha_code"`
 	}
 	RegistResponse {
 		Username         string `json:"username"`
@@ -55,37 +60,40 @@ type (
 		Old string `json:"old"`
 		New string `json:"new"`
 	}
-	UpdateResponse {
-		Status string `json:"status"`
-		Msg    string `json:"message"`
+	CaptchaResponse {
+		CaptchaId string `json:"captcha_id"`
+		ImgBase64 string `json:"img_base64"`
 	}
 )
 
 @server (
-	group:      user
-	middleware: RequestTimer,RateLimiter
+	group:      login
+	middleware: RequestTimer,RateLimiter,Header
 )
 service gateway-api {
-	@handler RegisterHandler
-	post /register (RegistRequest) returns (RegistResponse)
+	@handler GenerateCaptcha
+	get /captcha returns (BaseResponse)
 
-	@handler LoginHandler
-	post /login (LoginRequest) returns (LoginResponse)
+	@handler Register
+	post /register (RegistRequest) returns (BaseResponse)
+
+	@handler Login
+	post /login (LoginRequest) returns (BaseResponse)
 }
 
 @server (
 	prefix:     /v1
 	group:      user
-	middleware: JwtAuth,RateLimiter
+	middleware: JwtAuth,RateLimiter,Header
 )
 service gateway-api {
-	@handler GetUserInfoHandler
-	get /info returns (GetUserInfoResponse)
+	@handler GetUserInfo
+	get /info returns (BaseResponse)
 
-	@handler UpdateUserInfoHandler
-	post /update (UpdateUserInfoReqest) returns (UpdateResponse)
+	@handler UpdateUserInfo
+	post /update (UpdateUserInfoReqest) returns (BaseResponse)
 
-	@handler ChangePasswordHandler
-	post /chpasswd (ChangePasswordRequest) returns (UpdateResponse)
+	@handler ChangePassword
+	post /chpasswd (ChangePasswordRequest) returns (BaseResponse)
 }
 

@@ -4,11 +4,11 @@
 package middleware
 
 import (
-	"errors"
 	"net/http"
 	"sync"
 	"time"
 
+	"github.com/xxx-newbee/gateway/internal/types"
 	"github.com/zeromicro/go-zero/rest/httpx"
 )
 
@@ -22,20 +22,18 @@ type RateLimiterMiddleware struct {
 func NewRateLimiterMiddleware() *RateLimiterMiddleware {
 	return &RateLimiterMiddleware{
 		requestRecords: make(map[string][]time.Time),
-		maxRequests:    1,
+		maxRequests:    3,
 		windowSize:     time.Second * 10,
 	}
 }
 
 func (m *RateLimiterMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		// TODO generate middleware implement function, delete after code implementation
 		clientIP := r.RemoteAddr
 		m.mutex.Lock()
 		defer m.mutex.Unlock()
 
 		now := time.Now()
-
 		// 清理过期的请求记录
 		if records, exists := m.requestRecords[clientIP]; exists {
 			var validRecords []time.Time
@@ -48,7 +46,8 @@ func (m *RateLimiterMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc {
 		}
 		// 检查请求频率
 		if len(m.requestRecords[clientIP]) >= m.maxRequests {
-			httpx.Error(w, errors.New("请求过于频繁，请稍后再试"))
+			httpx.OkJson(w, types.BaseResponse{Code: 200, Msg: "frequency exceeded"})
+			return
 		}
 		// 记录本次请求
 		m.requestRecords[clientIP] = append(m.requestRecords[clientIP], now)
