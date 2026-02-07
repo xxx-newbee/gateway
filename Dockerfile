@@ -1,11 +1,23 @@
 FROM golang:1.24-alpine AS builder
-WORKDIR /app
-COPY . .
+
+ENV TZ Asia/Shanghai
+
+RUN apk update --no-cache && apk add --no-cache tzdata
+WORKDIR /build
+ADD go.mod .
+ADD go.sum .
 RUN go env -w GO111MODULE=on
 RUN go env -w GOPROXY=https://goproxy.cn,direct
-RUN go mod tidy && go build -o /app/gateway-srv ./
+RUN go mod download
+COPY . .
 
-FROM alpine:3.20
+RUN go build -ldflags="-s -w" -o /app/gateway-srv .
+
+FROM alpine
+
+COPY --from=builder /usr/share/zoneinfo/Asia/Shanghai /usr/share/zoneinfo/Asia/Shanghai
+ENV TZ Asia/Shanghai
+
 WORKDIR /app
 COPY --from=builder /app/gateway-srv /app/gateway-srv
 RUN chmod +x /app/gateway-srv
