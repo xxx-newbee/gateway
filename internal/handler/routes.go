@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	login "github.com/xxx-newbee/gateway/internal/handler/login"
+	order "github.com/xxx-newbee/gateway/internal/handler/order"
 	user "github.com/xxx-newbee/gateway/internal/handler/user"
 	"github.com/xxx-newbee/gateway/internal/svc"
 
@@ -35,6 +36,25 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				},
 			}...,
 		),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.JwtAuth, serverCtx.RateLimiter, serverCtx.Header},
+			[]rest.Route{
+				{
+					Method:  http.MethodGet,
+					Path:    "/activity/:id",
+					Handler: order.FindActivityHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/seckill",
+					Handler: order.SeckillStockHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/v1"),
 	)
 
 	server.AddRoutes(

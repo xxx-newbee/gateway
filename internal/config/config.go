@@ -10,8 +10,9 @@ import (
 
 type Config struct {
 	rest.RestConf
-	UserRpcConf zrpc.RpcClientConf
-	JWT         struct {
+	UserRpcConf  zrpc.RpcClientConf
+	OrderRpcConf zrpc.RpcClientConf
+	JWT          struct {
 		Secret        string
 		AccessExpire  int64
 		RefreshExpire int64

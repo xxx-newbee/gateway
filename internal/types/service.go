@@ -14,3 +14,8 @@ type UserService interface {
 	ChangePassword(context.Context, *ChangePasswordRequest, ...grpc.CallOption) error
 	GenerateCaptcha(context.Context, ...grpc.CallOption) (*CaptchaResponse, error)
 }
+
+type OrderService interface {
+	SeckillStock(context.Context, *SeckillRequest, ...grpc.CallOption) (*SeckillResponse, error)
+	FindActivity(context.Context, ...grpc.CallOption) (BaseResponse, error)
+}

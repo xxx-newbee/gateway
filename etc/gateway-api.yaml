@@ -16,12 +16,18 @@ Jwt:
   AccessExpire: 3600                       # accessToken过期时间（秒）：1小时
   RefreshExpire: 604800                    # refreshToken过期时间（秒）：7天
 
-# 新增：User RPC客户端配置（对接user服务）
 UserRpcConf:
   Etcd:
     Hosts:
       - 127.0.0.1:2379
-    Key: user.rpc  # 必须和user服务的etcd key一致（user/etc/user.yaml中的Key）
+    Key: user.rpc
+  NonBlock: true   # 非阻塞连接（开发环境推荐）
+
+OrderRpcConf:
+  Etcd:
+    Hosts:
+      - 127.0.0.1:2379
+    Key: order.rpc
   NonBlock: true   # 非阻塞连接（开发环境推荐）
 
 # 限流配置（保护下游服务）

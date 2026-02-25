@@ -62,6 +62,18 @@ type RegistResponse struct {
 	ReferralCode     string `json:"referral_code"`
 }
 
+type SeckillRequest struct {
+	UserId     int64 `json:"user_id"`
+	ActivityId int64 `json:"activity_id"`
+	ProductId  int64 `json:"product_id"`
+}
+
+type SeckillResponse struct {
+	OrderNo string `json:"order_no"`
+	Success bool   `json:"success"`
+	Msg     string `json:"msg"`
+}
+
 type UpdateUserInfoReqest struct {
 	Nickname   string `json:"nickname"`
 	WalletAddr string `json:"wallet_addr"`
