@@ -8,6 +8,7 @@ import (
 
 	"github.com/xxx-newbee/gateway/internal/svc"
 	"github.com/xxx-newbee/gateway/internal/types"
+	"github.com/xxx-newbee/user/user"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -26,11 +27,16 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic 
 }
 
 func (l *LoginLogic) Login(req *types.LoginRequest) (*types.BaseResponse, error) {
-	var resp *types.LoginResponse
+	var resp *user.LoginResponse
 	// 熔断器保护
 	err := l.svcCtx.UserBreaker.DoWithAcceptable(func() error {
 		var innerErr error
-		resp, innerErr = l.svcCtx.UserService.Login(l.ctx, req)
+		resp, innerErr = l.svcCtx.UserRpc.Login(l.ctx, &user.LoginRequest{
+			Username:    req.Username,
+			Password:    req.Password,
+			CaptchaId:   req.CaptchaId,
+			CaptchaCode: req.CaptchaCode,
+		})
 		return innerErr
 	}, func(err error) bool {
 		// 触发熔断

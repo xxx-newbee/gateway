@@ -19,6 +19,18 @@ type ChangePasswordRequest struct {
 	New string `json:"new"`
 }
 
+type ChatRequest struct {
+	Prompt string `json:"prompt"`
+	Model  string `json:"model"`
+	Stream bool   `json:"stream"`
+}
+
+type ChatResponse struct {
+	Success  bool   `json:"success"`
+	Response string `json:"response"`
+	Done     bool   `json:"done"`
+}
+
 type GetUserInfoResponse struct {
 	Username         string `json:"username"`
 	Nickname         string `json:"nickname"`

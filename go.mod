@@ -51,7 +51,6 @@ require (
 	go.etcd.io/etcd/client/v3 v3.5.15 // indirect
 	go.opentelemetry.io/auto/sdk v1.2.1 // indirect
 	go.opentelemetry.io/otel v1.39.0 // indirect
-	go.opentelemetry.io/otel/exporters/jaeger v1.17.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.24.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc v1.24.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp v1.24.0 // indirect
@@ -66,6 +65,7 @@ require (
 	go.uber.org/mock v0.6.0 // indirect
 	go.uber.org/multierr v1.9.0 // indirect
 	go.uber.org/zap v1.24.0 // indirect
+	go.yaml.in/yaml/v2 v2.4.2 // indirect
 	golang.org/x/net v0.48.0 // indirect
 	golang.org/x/oauth2 v0.34.0 // indirect
 	golang.org/x/sys v0.39.0 // indirect
@@ -91,12 +91,14 @@ require (
 
 require (
 	github.com/golang-jwt/jwt/v5 v5.3.0
+	github.com/xxx-newbee/chat v1.0.0
 	github.com/xxx-newbee/order v1.0.0
 	github.com/xxx-newbee/user v0.1.4
 	google.golang.org/grpc v1.79.1
 )
 
 replace (
+	github.com/xxx-newbee/chat v1.0.0 => ../chat
 	github.com/xxx-newbee/order => ../order
 	github.com/xxx-newbee/user => ../user
 )

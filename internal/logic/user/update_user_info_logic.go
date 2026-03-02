@@ -5,12 +5,11 @@ package user
 
 import (
 	"context"
-	"errors"
 
 	"github.com/xxx-newbee/gateway/internal/svc"
 	"github.com/xxx-newbee/gateway/internal/types"
+	"github.com/xxx-newbee/user/user"
 	"github.com/zeromicro/go-zero/core/logx"
-	"google.golang.org/grpc/metadata"
 )
 
 type UpdateUserInfoLogic struct {
@@ -28,16 +27,11 @@ func NewUpdateUserInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Up
 }
 
 func (l *UpdateUserInfoLogic) UpdateUserInfo(req *types.UpdateUserInfoReqest) (*types.BaseResponse, error) {
-	tokenStr, ok := l.ctx.Value("Authorization").(string)
-	if !ok || tokenStr == "" {
-		return nil, errors.New("authorization token not found in context")
-	}
-
-	md := metadata.Pairs("Authorization", tokenStr)
-	l.ctx = metadata.NewOutgoingContext(l.ctx, md)
-
 	err := l.svcCtx.UserBreaker.DoWithAcceptable(func() error {
-		innerErr := l.svcCtx.UserService.UpdateUserInfo(l.ctx, req)
+		_, innerErr := l.svcCtx.UserRpc.UpdateUserInfo(l.ctx, &user.UpdateUserInfoReqest{
+			Nickname:   req.Nickname,
+			WalletAddr: req.WalletAddr,
+		})
 		return innerErr
 	}, func(err error) bool {
 		return err != nil && context.DeadlineExceeded == err

@@ -74,6 +74,16 @@ type (
 		Success bool   `json:"success"`
 		Msg     string `json:"msg"`
 	}
+	ChatRequest {
+		Prompt string `json:"prompt"`
+		Model  string `json:"model"`
+		Stream bool   `json:"stream"`
+	}
+	ChatResponse {
+		Success  bool   `json:"success"`
+		Response string `json:"response"`
+		Done     bool   `json:"done"`
+	}
 )
 
 @server (
@@ -94,7 +104,7 @@ service gateway-api {
 @server (
 	prefix:     /v1
 	group:      user
-	middleware: JwtAuth,RateLimiter,Header
+	middleware: JwtAuth,RateLimiter,Header,RequestTimer
 )
 service gateway-api {
 	@handler GetUserInfo
@@ -110,7 +120,7 @@ service gateway-api {
 @server (
 	prefix:     /v1
 	group:      order
-	middleware: JwtAuth,RateLimiter,Header
+	middleware: JwtAuth,RateLimiter,Header,RequestTimer
 )
 service gateway-api {
 	@handler SeckillStock
@@ -118,5 +128,15 @@ service gateway-api {
 
 	@handler FindActivity
 	get /activity/:id returns (BaseResponse)
+}
+
+@server (
+	prefix:     /v1
+	group:      chat
+	middleware: JwtAuth,RateLimiter,Header,RequestTimer
+)
+service gateway-api {
+	@handler Chat
+	post /chat (ChatRequest) returns (BaseResponse)
 }
 

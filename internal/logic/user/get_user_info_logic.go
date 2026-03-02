@@ -8,6 +8,7 @@ import (
 
 	"github.com/xxx-newbee/gateway/internal/svc"
 	"github.com/xxx-newbee/gateway/internal/types"
+	"github.com/xxx-newbee/user/user"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -26,19 +27,10 @@ func NewGetUserInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetUs
 }
 
 func (l *GetUserInfoLogic) GetUserInfo() (*types.BaseResponse, error) {
-
-	//tokenStr, ok := l.ctx.Value("Authorization").(string)
-	//if !ok || tokenStr == "" {
-	//	return nil, errors.New("authorization token not found in context")
-	//}
-	//
-	//md := metadata.Pairs("Authorization", tokenStr)
-	//l.ctx = metadata.NewOutgoingContext(l.ctx, md)
-
-	var resp *types.GetUserInfoResponse
+	var resp *user.GetUserInfoResponse
 	err := l.svcCtx.UserBreaker.DoWithAcceptable(func() error {
 		var innerErr error
-		resp, innerErr = l.svcCtx.UserService.GetUserInfo(l.ctx)
+		resp, innerErr = l.svcCtx.UserRpc.GetUserInfo(l.ctx, &user.Empty{})
 		return innerErr
 	}, func(err error) bool {
 		return err != nil && context.DeadlineExceeded == err

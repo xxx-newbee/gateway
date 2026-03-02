@@ -8,6 +8,7 @@ import (
 
 	"github.com/xxx-newbee/gateway/internal/svc"
 	"github.com/xxx-newbee/gateway/internal/types"
+	"github.com/xxx-newbee/user/user"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -27,15 +28,7 @@ func NewGenerateCaptchaLogic(ctx context.Context, svcCtx *svc.ServiceContext) *G
 }
 
 func (l *GenerateCaptchaLogic) GenerateCaptcha() (*types.BaseResponse, error) {
-	//var resp *types.CaptchaResponse
-	//err := l.svcCtx.UserBreaker.DoWithAcceptable(func() error {
-	//	var innerErr error
-	//	resp, innerErr = l.svcCtx.UserService.GenerateCaptcha(l.ctx)
-	//	return innerErr
-	//}, func(err error) bool {
-	//	return err != nil && context.DeadlineExceeded == err
-	//})
-	resp, err := l.svcCtx.UserService.GenerateCaptcha(l.ctx)
+	resp, err := l.svcCtx.UserRpc.GenerateCaptcha(l.ctx, &user.Empty{})
 
 	if err != nil {
 		return &types.BaseResponse{

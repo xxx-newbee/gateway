@@ -12,6 +12,7 @@ type Config struct {
 	rest.RestConf
 	UserRpcConf  zrpc.RpcClientConf
 	OrderRpcConf zrpc.RpcClientConf
+	ChatRpcConf  zrpc.RpcClientConf
 	JWT          struct {
 		Secret        string
 		AccessExpire  int64

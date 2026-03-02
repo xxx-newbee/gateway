@@ -5,12 +5,10 @@ package user
 
 import (
 	"context"
-	"errors"
 
 	"github.com/xxx-newbee/gateway/internal/svc"
 	"github.com/xxx-newbee/gateway/internal/types"
-	"google.golang.org/grpc/metadata"
-
+	"github.com/xxx-newbee/user/user"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -29,16 +27,10 @@ func NewChangePasswordLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ch
 }
 
 func (l *ChangePasswordLogic) ChangePassword(req *types.ChangePasswordRequest) (*types.BaseResponse, error) {
-	// todo: add your logic here and delete this line
-	tokenStr, ok := l.ctx.Value("Authorization").(string)
-	if !ok || tokenStr == "" {
-		return nil, errors.New("authorization token not found in context")
-	}
-
-	md := metadata.Pairs("Authorization", tokenStr)
-	l.ctx = metadata.NewOutgoingContext(l.ctx, md)
-
-	err := l.svcCtx.UserService.ChangePassword(l.ctx, req)
+	_, err := l.svcCtx.UserRpc.ChangePassword(l.ctx, &user.ChangePassWdRequest{
+		Old: req.Old,
+		New: req.New,
+	})
 
 	if err != nil {
 		return &types.BaseResponse{

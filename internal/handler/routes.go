@@ -6,6 +6,7 @@ package handler
 import (
 	"net/http"
 
+	chat "github.com/xxx-newbee/gateway/internal/handler/chat"
 	login "github.com/xxx-newbee/gateway/internal/handler/login"
 	order "github.com/xxx-newbee/gateway/internal/handler/order"
 	user "github.com/xxx-newbee/gateway/internal/handler/user"
@@ -15,6 +16,20 @@ import (
 )
 
 func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.JwtAuth, serverCtx.RateLimiter, serverCtx.Header, serverCtx.RequestTimer},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/chat",
+					Handler: chat.ChatHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/v1"),
+	)
+
 	server.AddRoutes(
 		rest.WithMiddlewares(
 			[]rest.Middleware{serverCtx.RequestTimer, serverCtx.RateLimiter, serverCtx.Header},
@@ -40,7 +55,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.JwtAuth, serverCtx.RateLimiter, serverCtx.Header},
+			[]rest.Middleware{serverCtx.JwtAuth, serverCtx.RateLimiter, serverCtx.Header, serverCtx.RequestTimer},
 			[]rest.Route{
 				{
 					Method:  http.MethodGet,
@@ -59,7 +74,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.JwtAuth, serverCtx.RateLimiter, serverCtx.Header},
+			[]rest.Middleware{serverCtx.JwtAuth, serverCtx.RateLimiter, serverCtx.Header, serverCtx.RequestTimer},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,

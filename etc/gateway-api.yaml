@@ -2,6 +2,7 @@ Name: gateway-api
 Host: 0.0.0.0
 Port: 8888
 Mode: dev
+Timeout: 300000
 
 Cors:
   AllowOrigins:
@@ -21,7 +22,7 @@ UserRpcConf:
     Hosts:
       - 127.0.0.1:2379
     Key: user.rpc
-  NonBlock: true   # 非阻塞连接（开发环境推荐）
+  NonBlock: true
 
 OrderRpcConf:
   Etcd:
@@ -29,6 +30,15 @@ OrderRpcConf:
       - 127.0.0.1:2379
     Key: order.rpc
   NonBlock: true   # 非阻塞连接（开发环境推荐）
+
+ChatRpcConf:
+  Etcd:
+    Hosts:
+      - 127.0.0.1:2379
+    Key: chat.rpc
+  NonBlock: true
+  Timeout: 300000
+
 
 # 限流配置（保护下游服务）
 Limit:
