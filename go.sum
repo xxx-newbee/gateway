@@ -144,6 +144,12 @@ github.com/stretchr/testify v1.8.0/go.mod h1:yNjHg4UonilssWZ8iaSj1OCr/vHnekPRkoO
 github.com/stretchr/testify v1.8.1/go.mod h1:w2LPCIKwWwSfY2zedu0+kehJoqGctiVI29o6fzry7u4=
 github.com/stretchr/testify v1.11.1 h1:7s2iGBzp5EwR7/aIZr8ao5+dra3wiQyKjjFuvgVKu7U=
 github.com/stretchr/testify v1.11.1/go.mod h1:wZwfW3scLgRK+23gO65QZefKpKQRnfz6sD981Nm4B6U=
+github.com/xxx-newbee/chat v1.0.0 h1:GK2Qt/Z0AplwZPlw2j/Izq3ZK/XILvhOjJwNJtagPeA=
+github.com/xxx-newbee/chat v1.0.0/go.mod h1:aC1Ta2YWZuOfnBt3JT6OPSthFcRws9XTomY0e5iHOcc=
+github.com/xxx-newbee/order v1.0.0 h1:uOYM2WeIjAEpei8qY7wwmaZf0xUTkBbZ/Xnloxv6K1E=
+github.com/xxx-newbee/order v1.0.0/go.mod h1:4bl/2mVq7LZgcHlbZv82WEMMpLS64eau96hT3IWfTvc=
+github.com/xxx-newbee/user v1.0.6 h1:sZ0tRJ3jyIoAKw1N6PHZvCoflkk+o/8yS9FeMK6Q/uQ=
+github.com/xxx-newbee/user v1.0.6/go.mod h1:7tFHVUXpcyWZnLqqiO9GM4WkR18rFNC7vS9ENUxhshI=
 github.com/yuin/goldmark v1.1.27/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.2.1/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/gopher-lua v1.1.1 h1:kYKnWBjvbNP4XLT3+bPEwAXJx262OhaHDWDVOPjL46M=

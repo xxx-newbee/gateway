@@ -23,7 +23,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.IMAGE_NAME }}:latest
+          tags: huangjg/gateway-srv:latest
 
   deploy:
     needs: build-and-push
@@ -39,18 +39,14 @@ jobs:
           port: 6006
           script: |
             # 拉取最新镜像
-            docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.IMAGE_NAME }}:latest
+            docker pull huangjg/gateway-srv:latest
             
             # 停止旧容器
-            docker stop my-go-app || true
-            docker rm my-go-app || true
+            docker stop gateway-srv || true
+            docker rm gateway-srv || true
             
             # 启动新容器
-            docker run -d \
-              --name my-go-app \
-              --restart always \
-              -p 8080:8080 \
-              ${{ secrets.DOCKER_USERNAME }}/${{ secrets.IMAGE_NAME }}:latest
+            docker run -d --name gateway-srv --net go-micro --restart always -v /etc/go-micro:/etc -p 8080:8080 huangjg/gateway-srv:latest -f /etc/gateway-api.yaml
             
             # 清理旧镜像 (可选)
             docker image prune -f
