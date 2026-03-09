@@ -1,6 +1,6 @@
-FROM golang:1.24-alpine AS builder
+FROM golang:1.26-alpine AS builder
 
-ENV TZ Asia/Shanghai
+ENV TZ=Asia/Shanghai
 
 RUN apk update --no-cache && apk add --no-cache tzdata
 WORKDIR /build
@@ -16,7 +16,7 @@ RUN go build -ldflags="-s -w" -o /app/gateway-srv .
 FROM alpine
 
 COPY --from=builder /usr/share/zoneinfo/Asia/Shanghai /usr/share/zoneinfo/Asia/Shanghai
-ENV TZ Asia/Shanghai
+ENV TZ=Asia/Shanghai
 
 WORKDIR /app
 COPY --from=builder /app/gateway-srv /app/gateway-srv
