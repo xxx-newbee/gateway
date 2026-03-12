@@ -6,7 +6,7 @@ Timeout: 300000
 
 Cors:
   AllowOrigins:
-    - "http://localhost:5173"
+    - "*"
   AllowCredentials: true
   MaxAge: 86400
 

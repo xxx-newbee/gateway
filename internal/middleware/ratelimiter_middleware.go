@@ -46,7 +46,7 @@ func (m *RateLimiterMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc {
 		}
 		// 检查请求频率
 		if len(m.requestRecords[clientIP]) >= m.maxRequests {
-			httpx.OkJson(w, types.BaseResponse{Code: 200, Msg: "frequency exceeded"})
+			httpx.OkJson(w, types.BaseResponse{Code: 429, Msg: "frequency exceeded"})
 			return
 		}
 		// 记录本次请求
