@@ -45,7 +45,7 @@ jobs:
             docker rm gateway-srv || true
             
             # 启动新容器
-            docker run -d --name gateway-srv --net go-micro --restart always -v ~/go-micro/gateway-api.yaml:/app/gateway-api.yaml -p 8888:8888 huangjg/gateway-srv:latest -f /app/gateway-api.yaml
+            docker run -d --name gateway-srv --network host --restart always -v ~/go-micro/gateway-api.yaml:/app/gateway-api.yaml -p 8888:8888 huangjg/gateway-srv:latest -f /app/gateway-api.yaml
             
             # 清理旧镜像 (可选)
             docker image prune -f
