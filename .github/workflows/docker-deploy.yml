@@ -23,7 +23,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: huangjg/gateway-srv:latest
+          tags: newlybee/gateway-srv:latest
 
   deploy:
     needs: build-and-push
@@ -38,14 +38,14 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             # 拉取最新镜像
-            docker pull huangjg/gateway-srv:latest
+            docker pull newlybee/gateway-srv:latest
             
             # 停止旧容器
             docker stop gateway-srv || true
             docker rm gateway-srv || true
             
             # 启动新容器
-            docker run -d --name gateway-srv --network host --restart always -v ~/go-micro/gateway-api.yaml:/app/gateway-api.yaml -p 8888:8888 huangjg/gateway-srv:latest -f /app/gateway-api.yaml
+            docker run -d --name gateway-srv --network host --restart always -v ~/go-micro/gateway-api.yaml:/app/gateway-api.yaml -p 8888:8888 newlybee/gateway-srv:latest -f /app/gateway-api.yaml
             
             # 清理旧镜像 (可选)
             docker image prune -f
