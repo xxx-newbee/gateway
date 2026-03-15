@@ -2,7 +2,6 @@ Name: gateway-api
 Host: 0.0.0.0
 Port: 8888
 Mode: dev
-Timeout: 300000
 
 Cors:
   AllowOrigins:
@@ -23,6 +22,7 @@ UserRpcConf:
       - 127.0.0.1:2379
     Key: user.rpc
   NonBlock: true
+  Timeout: 10000    #等待rpc发送邮箱相应10s
 
 OrderRpcConf:
   Etcd:
