@@ -2,6 +2,7 @@ Name: gateway-api
 Host: 0.0.0.0
 Port: 8888
 Mode: dev
+Timeout: 300000
 
 Cors:
   AllowOrigins:
