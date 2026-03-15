@@ -32,13 +32,14 @@ func (l *RegisterLogic) Register(req *types.RegistRequest) (*types.BaseResponse,
 	err := l.svcCtx.UserBreaker.DoWithAcceptable(func() error {
 		var innerErr error
 		resp, innerErr = l.svcCtx.UserRpc.Register(l.ctx, &user.RegisterRequest{
-			Username: req.Username,
-			Password: req.Password,
-			Nickname: req.Nickname,
-			WalletAddr: req.WalletAddr,
+			Username:     req.Username,
+			Password:     req.Password,
+			Nickname:     req.Nickname,
+			Email:        req.Email,
+			WalletAddr:   req.WalletAddr,
 			ReferralCode: req.ReferralCode,
-			CaptchaId: req.CaptchaId,
-			CaptchaCode: req.CaptchaCode,
+			CaptchaId:    req.CaptchaId,
+			CaptchaCode:  req.CaptchaCode,
 		})
 		return innerErr
 	}, func(err error) bool {
