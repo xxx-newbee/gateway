@@ -86,6 +86,14 @@ type SeckillResponse struct {
 	Msg     string `json:"msg"`
 }
 
+type SendEmailRequest struct {
+	Email string `json:"email"`
+}
+
+type SendEmailResponse struct {
+	Success bool `json:"success"`
+}
+
 type UpdateUserInfoReqest struct {
 	Nickname   string `json:"nickname"`
 	WalletAddr string `json:"wallet_addr"`
