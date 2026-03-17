@@ -23,6 +23,7 @@ UserRpcConf:
       - 127.0.0.1:2379
     Key: user.rpc
   NonBlock: true
+  Timeout: 10000
 
 OrderRpcConf:
   Etcd:
