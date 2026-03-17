@@ -37,15 +37,15 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            # 拉取最新镜像
-            docker pull newlybee/gateway-srv:latest
-            
             # 停止旧容器
             docker stop gateway-srv || true
             docker rm gateway-srv || true
             
+            # 删除旧镜像
+            docker rmi newlybee/gateway-srv:latest
+            
+            # 拉取最新镜像
+            docker pull newlybee/gateway-srv:latest
+            
             # 启动新容器
             docker run -d --name gateway-srv --network host --restart always -v ~/go-micro/gateway-api.yaml:/app/gateway-api.yaml newlybee/gateway-srv:latest -f /app/gateway-api.yaml
-            
-            # 清理旧镜像 (可选)
-            docker image prune -f
