@@ -25,6 +25,7 @@ type (
 		UserId           int64  `json:"user_id"`
 		Username         string `json:"username"`
 		Nickname         string `json:"nickname"`
+		Email            string `json:"email"`
 		WalletAddr       string `json:"wallet_addr"`
 		UserReferralCode string `json:"user_referral_code"`
 		ReferralCode     string `json:"referral_code"`
@@ -33,6 +34,7 @@ type (
 		Username     string `json:"username" validate:"required,min=3,max=12"`
 		Password     string `json:"password" validate:"required,min=6"`
 		Nickname     string `json:"nickname" validate:"max=16"`
+		Email        string `json:"email"`
 		WalletAddr   string `json:"wallet_addr"`
 		ReferralCode string `json:"referral_code"`
 		CaptchaId    string `json:"captcha_id"`
@@ -41,9 +43,16 @@ type (
 	RegistResponse {
 		Username         string `json:"username"`
 		Nickname         string `json:"nickname"`
+		Email            string `json:"email"`
 		WalletAddr       string `json:"wallet_addr"`
 		UserReferralCode string `json:"user_referral_code"`
 		ReferralCode     string `json:"referral_code"`
+	}
+	SendEmailRequest {
+		Email string `json:"email"`
+	}
+	SendEmailResponse {
+		Success bool `json:"success"`
 	}
 	GetUserInfoResponse {
 		Username         string `json:"username"`
@@ -93,6 +102,9 @@ type (
 service gateway-api {
 	@handler GenerateCaptcha
 	get /captcha returns (BaseResponse)
+
+	@handler SendEmail
+	get /email (SendEmailRequest) returns (BaseResponse)
 
 	@handler Register
 	post /register (RegistRequest) returns (BaseResponse)

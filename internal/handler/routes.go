@@ -40,6 +40,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Handler: login.GenerateCaptchaHandler(serverCtx),
 				},
 				{
+					Method:  http.MethodGet,
+					Path:    "/email",
+					Handler: login.SendEmailHandler(serverCtx),
+				},
+				{
 					Method:  http.MethodPost,
 					Path:    "/login",
 					Handler: login.LoginHandler(serverCtx),

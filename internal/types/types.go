@@ -51,6 +51,7 @@ type LoginResponse struct {
 	UserId           int64  `json:"user_id"`
 	Username         string `json:"username"`
 	Nickname         string `json:"nickname"`
+	Email            string `json:"email"`
 	WalletAddr       string `json:"wallet_addr"`
 	UserReferralCode string `json:"user_referral_code"`
 	ReferralCode     string `json:"referral_code"`
@@ -60,6 +61,7 @@ type RegistRequest struct {
 	Username     string `json:"username" validate:"required,min=3,max=12"`
 	Password     string `json:"password" validate:"required,min=6"`
 	Nickname     string `json:"nickname" validate:"max=16"`
+	Email        string `json:"email"`
 	WalletAddr   string `json:"wallet_addr"`
 	ReferralCode string `json:"referral_code"`
 	CaptchaId    string `json:"captcha_id"`
@@ -69,6 +71,7 @@ type RegistRequest struct {
 type RegistResponse struct {
 	Username         string `json:"username"`
 	Nickname         string `json:"nickname"`
+	Email            string `json:"email"`
 	WalletAddr       string `json:"wallet_addr"`
 	UserReferralCode string `json:"user_referral_code"`
 	ReferralCode     string `json:"referral_code"`
@@ -84,6 +87,14 @@ type SeckillResponse struct {
 	OrderNo string `json:"order_no"`
 	Success bool   `json:"success"`
 	Msg     string `json:"msg"`
+}
+
+type SendEmailRequest struct {
+	Email string `json:"email"`
+}
+
+type SendEmailResponse struct {
+	Success bool `json:"success"`
 }
 
 type UpdateUserInfoReqest struct {
