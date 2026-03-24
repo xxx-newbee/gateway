@@ -5,6 +5,7 @@ package login
 
 import (
 	"context"
+	"strings"
 
 	"github.com/xxx-newbee/gateway/internal/svc"
 	"github.com/xxx-newbee/gateway/internal/types"
@@ -28,14 +29,10 @@ func NewSendEmailLogic(ctx context.Context, svcCtx *svc.ServiceContext) *SendEma
 }
 
 func (l *SendEmailLogic) SendEmail(req *types.SendEmailRequest) (*types.BaseResponse, error) {
-	var resp *user.SendEmailResponse
-	err := l.svcCtx.UserBreaker.DoWithAcceptable(func() error {
-		var innerErr error
-		resp, innerErr = l.svcCtx.UserRpc.SendEmail(l.ctx, &user.SendEmailRequest{Email: req.Email})
-		return innerErr
-	}, func(err error) bool {
-		return err != nil && context.DeadlineExceeded == err
-	})
+	if req.Email == "" || !strings.Contains(req.Email, "@") {
+		return &types.BaseResponse{Code: 200, Msg: "illegal email"}, nil
+	}
+	resp, err := l.svcCtx.UserRpc.SendEmail(l.ctx, &user.SendEmailRequest{Email: req.Email})
 
 	if err != nil {
 		return &types.BaseResponse{Code: 500, Msg: err.Error()}, nil
