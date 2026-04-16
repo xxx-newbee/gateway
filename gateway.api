@@ -66,8 +66,9 @@ type (
 		WalletAddr string `json:"wallet_addr"`
 	}
 	ChangePasswordRequest {
-		Old string `json:"old"`
-		New string `json:"new"`
+		Email string `json:"email"`
+		Code  string `json:"code"`
+		New   string `json:"new"`
 	}
 	CaptchaResponse {
 		CaptchaId string `json:"captcha_id"`

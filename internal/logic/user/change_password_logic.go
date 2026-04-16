@@ -28,8 +28,9 @@ func NewChangePasswordLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ch
 
 func (l *ChangePasswordLogic) ChangePassword(req *types.ChangePasswordRequest) (*types.BaseResponse, error) {
 	_, err := l.svcCtx.UserRpc.ChangePassword(l.ctx, &user.ChangePassWdRequest{
-		Old: req.Old,
-		New: req.New,
+		Email: req.Email,
+		Code:  req.Code,
+		New:   req.New,
 	})
 
 	if err != nil {

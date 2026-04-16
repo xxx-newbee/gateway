@@ -15,8 +15,9 @@ type CaptchaResponse struct {
 }
 
 type ChangePasswordRequest struct {
-	Old string `json:"old"`
-	New string `json:"new"`
+	Email string `json:"email"`
+	Code  string `json:"code"`
+	New   string `json:"new"`
 }
 
 type ChatRequest struct {
