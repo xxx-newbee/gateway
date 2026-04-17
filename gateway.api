@@ -113,6 +113,9 @@ service gateway-api {
 
 	@handler Login
 	post /login (LoginRequest) returns (BaseResponse)
+
+	@handler ChangePassword
+	post /chpasswd (ChangePasswordRequest) returns (BaseResponse)
 }
 
 @server (
@@ -126,9 +129,6 @@ service gateway-api {
 
 	@handler UpdateUserInfo
 	post /update (UpdateUserInfoReqest) returns (BaseResponse)
-
-	@handler ChangePassword
-	post /chpasswd (ChangePasswordRequest) returns (BaseResponse)
 }
 
 @server (

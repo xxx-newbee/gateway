@@ -40,6 +40,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Handler: login.GenerateCaptchaHandler(serverCtx),
 				},
 				{
+					Method:  http.MethodPost,
+					Path:    "/chpasswd",
+					Handler: login.ChangePasswordHandler(serverCtx),
+				},
+				{
 					Method:  http.MethodGet,
 					Path:    "/email",
 					Handler: login.SendEmailHandler(serverCtx),
@@ -81,11 +86,6 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 		rest.WithMiddlewares(
 			[]rest.Middleware{serverCtx.JwtAuth, serverCtx.RateLimiter, serverCtx.Header, serverCtx.RequestTimer},
 			[]rest.Route{
-				{
-					Method:  http.MethodPost,
-					Path:    "/chpasswd",
-					Handler: user.ChangePasswordHandler(serverCtx),
-				},
 				{
 					Method:  http.MethodGet,
 					Path:    "/info",

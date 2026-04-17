@@ -1,7 +1,7 @@
 // Code scaffolded by goctl. Safe to edit.
 // goctl 1.9.2
 
-package user
+package login
 
 import (
 	"context"
@@ -9,6 +9,7 @@ import (
 	"github.com/xxx-newbee/gateway/internal/svc"
 	"github.com/xxx-newbee/gateway/internal/types"
 	"github.com/xxx-newbee/user/user"
+
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -29,7 +30,7 @@ func NewChangePasswordLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ch
 func (l *ChangePasswordLogic) ChangePassword(req *types.ChangePasswordRequest) (*types.BaseResponse, error) {
 	_, err := l.svcCtx.UserRpc.ChangePassword(l.ctx, &user.ChangePassWdRequest{
 		Email: req.Email,
-		Code:  req.Code,
+		Code:  req.EmailVerifyCode,
 		New:   req.New,
 	})
 
