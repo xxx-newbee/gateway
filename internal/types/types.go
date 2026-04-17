@@ -15,9 +15,9 @@ type CaptchaResponse struct {
 }
 
 type ChangePasswordRequest struct {
-	Email string `json:"email"`
-	Code  string `json:"code"`
-	New   string `json:"new"`
+	Email           string `json:"email"`
+	EmailVerifyCode string `json:"email_verify_code"`
+	New             string `json:"new"`
 }
 
 type ChatRequest struct {
@@ -59,14 +59,15 @@ type LoginResponse struct {
 }
 
 type RegistRequest struct {
-	Username     string `json:"username" validate:"required,min=3,max=12"`
-	Password     string `json:"password" validate:"required,min=6"`
-	Nickname     string `json:"nickname" validate:"max=16"`
-	Email        string `json:"email"`
-	WalletAddr   string `json:"wallet_addr"`
-	ReferralCode string `json:"referral_code"`
-	CaptchaId    string `json:"captcha_id"`
-	CaptchaCode  string `json:"captcha_code"`
+	Username        string `json:"username" validate:"required,min=3,max=12"`
+	Password        string `json:"password" validate:"required,min=6"`
+	Nickname        string `json:"nickname" validate:"max=16"`
+	Email           string `json:"email"`
+	EmailVerifyCode string `json:"email_verify_code"`
+	WalletAddr      string `json:"wallet_addr"`
+	ReferralCode    string `json:"referral_code"`
+	CaptchaId       string `json:"captcha_id"`
+	CaptchaCode     string `json:"captcha_code"`
 }
 
 type RegistResponse struct {
