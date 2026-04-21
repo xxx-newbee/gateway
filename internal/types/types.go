@@ -37,7 +37,7 @@ type DeleteLoginLogRequest struct {
 }
 
 type GetUserInfoResponse struct {
-	UserId           string `json:"username"`
+	Username         string `json:"username"`
 	Nickname         string `json:"nickname"`
 	WalletAddr       string `json:"wallet_addr"`
 	UserReferralCode string `json:"user_referral_code"`
@@ -49,7 +49,7 @@ type LoginLogRequest struct {
 }
 
 type LoginRequest struct {
-	UserId      string `json:"username"`
+	Username    string `json:"username"`
 	Password    string `json:"password"`
 	CaptchaId   string `json:"captcha_id"`
 	CaptchaCode string `json:"captcha_code"`
@@ -58,7 +58,7 @@ type LoginRequest struct {
 type LoginResponse struct {
 	Token            string `json:"token"`
 	UserId           int64  `json:"user_id"`
-	UserId           string `json:"username"`
+	Username         string `json:"username"`
 	Nickname         string `json:"nickname"`
 	Email            string `json:"email"`
 	WalletAddr       string `json:"wallet_addr"`
@@ -67,7 +67,7 @@ type LoginResponse struct {
 }
 
 type RegistRequest struct {
-	UserId          string `json:"username" validate:"required,min=3,max=12"`
+	Username        string `json:"username" validate:"required,min=3,max=12"`
 	Password        string `json:"password" validate:"required,min=6"`
 	Nickname        string `json:"nickname" validate:"max=16"`
 	Email           string `json:"email"`
@@ -79,7 +79,7 @@ type RegistRequest struct {
 }
 
 type RegistResponse struct {
-	UserId           string `json:"username"`
+	Username         string `json:"username"`
 	Nickname         string `json:"nickname"`
 	Email            string `json:"email"`
 	WalletAddr       string `json:"wallet_addr"`

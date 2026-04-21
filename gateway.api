@@ -15,7 +15,7 @@ type (
 		Data interface{} `json:"data,omitempty"`
 	}
 	LoginRequest {
-		UserId      string `json:"username"`
+		Username    string `json:"username"`
 		Password    string `json:"password"`
 		CaptchaId   string `json:"captcha_id"`
 		CaptchaCode string `json:"captcha_code"`
@@ -23,7 +23,7 @@ type (
 	LoginResponse {
 		Token            string `json:"token"`
 		UserId           int64  `json:"user_id"`
-		UserId           string `json:"username"`
+		Username         string `json:"username"`
 		Nickname         string `json:"nickname"`
 		Email            string `json:"email"`
 		WalletAddr       string `json:"wallet_addr"`
@@ -31,7 +31,7 @@ type (
 		ReferralCode     string `json:"referral_code"`
 	}
 	RegistRequest {
-		UserId          string `json:"username" validate:"required,min=3,max=12"`
+		Username        string `json:"username" validate:"required,min=3,max=12"`
 		Password        string `json:"password" validate:"required,min=6"`
 		Nickname        string `json:"nickname" validate:"max=16"`
 		Email           string `json:"email"`
@@ -42,7 +42,7 @@ type (
 		CaptchaCode     string `json:"captcha_code"`
 	}
 	RegistResponse {
-		UserId           string `json:"username"`
+		Username         string `json:"username"`
 		Nickname         string `json:"nickname"`
 		Email            string `json:"email"`
 		WalletAddr       string `json:"wallet_addr"`
@@ -56,7 +56,7 @@ type (
 		Success bool `json:"success"`
 	}
 	GetUserInfoResponse {
-		UserId           string `json:"username"`
+		Username         string `json:"username"`
 		Nickname         string `json:"nickname"`
 		WalletAddr       string `json:"wallet_addr"`
 		UserReferralCode string `json:"user_referral_code"`

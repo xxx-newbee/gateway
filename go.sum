@@ -148,8 +148,7 @@ github.com/xxx-newbee/chat v1.0.0 h1:GK2Qt/Z0AplwZPlw2j/Izq3ZK/XILvhOjJwNJtagPeA
 github.com/xxx-newbee/chat v1.0.0/go.mod h1:aC1Ta2YWZuOfnBt3JT6OPSthFcRws9XTomY0e5iHOcc=
 github.com/xxx-newbee/order v1.0.0 h1:uOYM2WeIjAEpei8qY7wwmaZf0xUTkBbZ/Xnloxv6K1E=
 github.com/xxx-newbee/order v1.0.0/go.mod h1:4bl/2mVq7LZgcHlbZv82WEMMpLS64eau96hT3IWfTvc=
-github.com/xxx-newbee/user v1.1.1 h1:30YcZv2GE2YtzN4G8u94inSHMGE9MwmcKleMBlx8bJ8=
-github.com/xxx-newbee/user v1.1.1/go.mod h1:ohCAr5T/yZ0g0dDa+cIWuXUWanxAAYhZSAbTX880dBc=
+github.com/xxx-newbee/user v1.1.2 h1:QdJZyuPXhIGtUlFNf0APAPAH6WdmMahKpSRJD4oLkSk=
 github.com/xxx-newbee/user v1.1.2/go.mod h1:ohCAr5T/yZ0g0dDa+cIWuXUWanxAAYhZSAbTX880dBc=
 github.com/yuin/goldmark v1.1.27/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.2.1/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
