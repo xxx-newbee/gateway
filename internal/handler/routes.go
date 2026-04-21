@@ -87,9 +87,19 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.JwtAuth, serverCtx.RateLimiter, serverCtx.Header, serverCtx.RequestTimer},
 			[]rest.Route{
 				{
+					Method:  http.MethodPost,
+					Path:    "/deletelog",
+					Handler: user.DeleteLoginLogHandler(serverCtx),
+				},
+				{
 					Method:  http.MethodGet,
 					Path:    "/info",
 					Handler: user.GetUserInfoHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/loginlogs",
+					Handler: user.GetLoginLogHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodPost,
