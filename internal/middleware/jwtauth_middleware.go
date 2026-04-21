@@ -13,8 +13,9 @@ import (
 )
 
 type JWTClaims struct {
-	UserID   int64  `json:"user_id"`
-	Username string `json:"username"`
+	UserID       int64  `json:"user_id"`
+	Username     string `json:"username"`
+	TokenVersion int    `json:"token_version"`
 	jwt.RegisteredClaims
 }
 
