@@ -111,3 +111,33 @@ type UpdateUserInfoReqest struct {
 	Nickname   string `json:"nickname"`
 	WalletAddr string `json:"wallet_addr"`
 }
+
+type CreateSeckillActivityRequest struct {
+	ProductId    int64   `json:"product_id"`
+	SeckillPrice float64 `json:"seckill_price"`
+	StockNum     int32   `json:"stock_num"`
+	StartTime    int64   `json:"start_time"`
+	EndTime      int64   `json:"end_time"`
+}
+
+type LoadSeckillStockRequest struct {
+	ActivityId int64 `json:"activity_id"`
+}
+
+type GetSeckillOrderRequest struct {
+	OrderNo string `json:"order_no"`
+}
+
+type GetUserSeckillOrdersRequest struct {
+	UserId   int64 `json:"user_id"`
+	Page     int32 `json:"page"`
+	PageSize int32 `json:"page_size"`
+}
+
+type CancelTimeoutOrderRequest struct {
+	OrderNo string `json:"order_no"`
+}
+
+type FindActivityRequest struct {
+	Id int64 `path:"id"`
+}

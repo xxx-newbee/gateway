@@ -101,6 +101,30 @@ type (
 	DeleteLoginLogRequest {
 		Id uint64 `json:"id"`
 	}
+	CreateSeckillActivityRequest {
+		ProductId    int64   `json:"product_id"`
+		SeckillPrice float64 `json:"seckill_price"`
+		StockNum     int32   `json:"stock_num"`
+		StartTime    int64   `json:"start_time"`
+		EndTime      int64   `json:"end_time"`
+	}
+	LoadSeckillStockRequest {
+		ActivityId int64 `json:"activity_id"`
+	}
+	GetSeckillOrderRequest {
+		OrderNo string `json:"order_no"`
+	}
+	GetUserSeckillOrdersRequest {
+		UserId   int64 `json:"user_id"`
+		Page     int32 `json:"page"`
+		PageSize int32 `json:"page_size"`
+	}
+	CancelTimeoutOrderRequest {
+		OrderNo string `json:"order_no"`
+	}
+	FindActivityRequest {
+		Id int64 `path:"id"`
+	}
 )
 
 @server (
@@ -153,7 +177,22 @@ service gateway-api {
 	post /seckill (SeckillRequest) returns (BaseResponse)
 
 	@handler FindActivity
-	get /activity/:id returns (BaseResponse)
+	get /activity/:id (FindActivityRequest) returns (BaseResponse)
+
+	@handler CreateSeckillActivity
+	post /activity/create (CreateSeckillActivityRequest) returns (BaseResponse)
+
+	@handler LoadSeckillStock
+	post /stock/load (LoadSeckillStockRequest) returns (BaseResponse)
+
+	@handler GetSeckillOrder
+	post /order/get (GetSeckillOrderRequest) returns (BaseResponse)
+
+	@handler GetUserSeckillOrders
+	post /orders (GetUserSeckillOrdersRequest) returns (BaseResponse)
+
+	@handler CancelTimeoutOrder
+	post /order/cancel (CancelTimeoutOrderRequest) returns (BaseResponse)
 }
 
 @server (

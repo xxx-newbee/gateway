@@ -10,26 +10,28 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type FindActivityLogic struct {
+type GetUserSeckillOrdersLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewFindActivityLogic(ctx context.Context, svcCtx *svc.ServiceContext) *FindActivityLogic {
-	return &FindActivityLogic{
+func NewGetUserSeckillOrdersLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetUserSeckillOrdersLogic {
+	return &GetUserSeckillOrdersLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *FindActivityLogic) FindActivity(req *types.FindActivityRequest) (resp *types.BaseResponse, err error) {
-	var rpcResp *orderPb.GetSeckillActivityResponse
+func (l *GetUserSeckillOrdersLogic) GetUserSeckillOrders(req *types.GetUserSeckillOrdersRequest) (resp *types.BaseResponse, err error) {
+	var rpcResp *orderPb.GetUserSeckillOrdersResponse
 	err = l.svcCtx.UserBreaker.DoWithAcceptable(func() error {
 		var innerErr error
-		rpcResp, innerErr = l.svcCtx.OrderRpc.GetSeckillActivity(l.ctx, &orderPb.GetSeckillActivityRequest{
-			ActivityId: uint32(req.Id),
+		rpcResp, innerErr = l.svcCtx.OrderRpc.GetUserSeckillOrders(l.ctx, &orderPb.GetUserSeckillOrdersRequest{
+			UserId:   req.UserId,
+			Page:     req.Page,
+			PageSize: req.PageSize,
 		})
 		return innerErr
 	}, func(err error) bool {

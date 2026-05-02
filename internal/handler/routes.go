@@ -74,8 +74,33 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				},
 				{
 					Method:  http.MethodPost,
+					Path:    "/activity/create",
+					Handler: order.CreateSeckillActivityHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/order/cancel",
+					Handler: order.CancelTimeoutOrderHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/order/get",
+					Handler: order.GetSeckillOrderHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/orders",
+					Handler: order.GetUserSeckillOrdersHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
 					Path:    "/seckill",
 					Handler: order.SeckillStockHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/stock/load",
+					Handler: order.LoadSeckillStockHandler(serverCtx),
 				},
 			}...,
 		),

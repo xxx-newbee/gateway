@@ -10,26 +10,30 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type FindActivityLogic struct {
+type CreateSeckillActivityLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewFindActivityLogic(ctx context.Context, svcCtx *svc.ServiceContext) *FindActivityLogic {
-	return &FindActivityLogic{
+func NewCreateSeckillActivityLogic(ctx context.Context, svcCtx *svc.ServiceContext) *CreateSeckillActivityLogic {
+	return &CreateSeckillActivityLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *FindActivityLogic) FindActivity(req *types.FindActivityRequest) (resp *types.BaseResponse, err error) {
-	var rpcResp *orderPb.GetSeckillActivityResponse
+func (l *CreateSeckillActivityLogic) CreateSeckillActivity(req *types.CreateSeckillActivityRequest) (resp *types.BaseResponse, err error) {
+	var rpcResp *orderPb.CreateSeckillActivityResponse
 	err = l.svcCtx.UserBreaker.DoWithAcceptable(func() error {
 		var innerErr error
-		rpcResp, innerErr = l.svcCtx.OrderRpc.GetSeckillActivity(l.ctx, &orderPb.GetSeckillActivityRequest{
-			ActivityId: uint32(req.Id),
+		rpcResp, innerErr = l.svcCtx.OrderRpc.CreateSeckillActivity(l.ctx, &orderPb.CreateSeckillActivityRequest{
+			ProductId:    req.ProductId,
+			SeckillPrice: req.SeckillPrice,
+			StockNum:     req.StockNum,
+			StartTime:    req.StartTime,
+			EndTime:      req.EndTime,
 		})
 		return innerErr
 	}, func(err error) bool {

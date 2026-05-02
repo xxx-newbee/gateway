@@ -98,8 +98,8 @@ require (
 )
 
 // for dev
-//replace (
-//	github.com/xxx-newbee/chat v1.0.0 => ../chat
-//	github.com/xxx-newbee/order => ../order
-//	github.com/xxx-newbee/user => ../user
-//)
+replace (
+	github.com/xxx-newbee/chat v1.0.0 => ../chat
+	github.com/xxx-newbee/order v1.0.0 => ../order
+	github.com/xxx-newbee/user v1.1.4 => ../user
+)

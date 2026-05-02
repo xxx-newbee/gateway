@@ -1,6 +1,3 @@
-// Code scaffolded by goctl. Safe to edit.
-// goctl 1.9.2
-
 package order
 
 import (
@@ -8,6 +5,7 @@ import (
 
 	"github.com/xxx-newbee/gateway/internal/svc"
 	"github.com/xxx-newbee/gateway/internal/types"
+	orderPb "github.com/xxx-newbee/order/order"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -27,7 +25,29 @@ func NewSeckillStockLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Seck
 }
 
 func (l *SeckillStockLogic) SeckillStock(req *types.SeckillRequest) (resp *types.BaseResponse, err error) {
-	// todo: add your logic here and delete this line
+	var rpcResp *orderPb.SeckillOrderResponse
+	err = l.svcCtx.UserBreaker.DoWithAcceptable(func() error {
+		var innerErr error
+		rpcResp, innerErr = l.svcCtx.OrderRpc.SeckillOrder(l.ctx, &orderPb.SeckillOrderRequest{
+			UserId:     req.UserId,
+			ActivityId: req.ActivityId,
+			ProductId:  req.ProductId,
+		})
+		return innerErr
+	}, func(err error) bool {
+		return err != nil && context.DeadlineExceeded == err
+	})
 
-	return
+	if err != nil {
+		return &types.BaseResponse{
+			Code: 500,
+			Msg:  err.Error(),
+		}, nil
+	}
+
+	return &types.BaseResponse{
+		Code: 200,
+		Msg:  "ok",
+		Data: rpcResp,
+	}, nil
 }

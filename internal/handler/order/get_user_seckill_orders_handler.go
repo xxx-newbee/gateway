@@ -9,16 +9,16 @@ import (
 	"github.com/zeromicro/go-zero/rest/httpx"
 )
 
-func FindActivityHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func GetUserSeckillOrdersHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req types.FindActivityRequest
+		var req types.GetUserSeckillOrdersRequest
 		if err := httpx.Parse(r, &req); err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 			return
 		}
 
-		l := order.NewFindActivityLogic(r.Context(), svcCtx)
-		resp, err := l.FindActivity(&req)
+		l := order.NewGetUserSeckillOrdersLogic(r.Context(), svcCtx)
+		resp, err := l.GetUserSeckillOrders(&req)
 		if err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 		} else {

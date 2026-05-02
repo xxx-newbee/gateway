@@ -10,26 +10,26 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type FindActivityLogic struct {
+type GetSeckillOrderLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewFindActivityLogic(ctx context.Context, svcCtx *svc.ServiceContext) *FindActivityLogic {
-	return &FindActivityLogic{
+func NewGetSeckillOrderLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetSeckillOrderLogic {
+	return &GetSeckillOrderLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *FindActivityLogic) FindActivity(req *types.FindActivityRequest) (resp *types.BaseResponse, err error) {
-	var rpcResp *orderPb.GetSeckillActivityResponse
+func (l *GetSeckillOrderLogic) GetSeckillOrder(req *types.GetSeckillOrderRequest) (resp *types.BaseResponse, err error) {
+	var rpcResp *orderPb.GetSeckillOrderResponse
 	err = l.svcCtx.UserBreaker.DoWithAcceptable(func() error {
 		var innerErr error
-		rpcResp, innerErr = l.svcCtx.OrderRpc.GetSeckillActivity(l.ctx, &orderPb.GetSeckillActivityRequest{
-			ActivityId: uint32(req.Id),
+		rpcResp, innerErr = l.svcCtx.OrderRpc.GetSeckillOrder(l.ctx, &orderPb.GetSeckillOrderRequest{
+			OrderNo: req.OrderNo,
 		})
 		return innerErr
 	}, func(err error) bool {
