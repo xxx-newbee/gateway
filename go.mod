@@ -92,14 +92,14 @@ require (
 require (
 	github.com/golang-jwt/jwt/v5 v5.3.0
 	github.com/xxx-newbee/chat v1.0.0
-	github.com/xxx-newbee/order v1.0.0
+	github.com/xxx-newbee/order v1.0.2
 	github.com/xxx-newbee/user v1.1.4
 	google.golang.org/grpc v1.79.3
 )
 
 // for dev
-replace (
-	github.com/xxx-newbee/chat v1.0.0 => ../chat
-	github.com/xxx-newbee/order v1.0.0 => ../order
-	github.com/xxx-newbee/user v1.1.4 => ../user
-)
+// replace (
+// 	github.com/xxx-newbee/chat v1.0.0 => ../chat
+// 	github.com/xxx-newbee/order v1.0.0 => ../order
+// 	github.com/xxx-newbee/user v1.1.4 => ../user
+// )
