@@ -6,9 +6,11 @@ package handler
 import (
 	"net/http"
 
+	callback "github.com/xxx-newbee/gateway/internal/handler/callback"
 	chat "github.com/xxx-newbee/gateway/internal/handler/chat"
 	login "github.com/xxx-newbee/gateway/internal/handler/login"
 	order "github.com/xxx-newbee/gateway/internal/handler/order"
+	pay "github.com/xxx-newbee/gateway/internal/handler/pay"
 	user "github.com/xxx-newbee/gateway/internal/handler/user"
 	"github.com/xxx-newbee/gateway/internal/svc"
 
@@ -16,6 +18,20 @@ import (
 )
 
 func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.RequestTimer, serverCtx.RateLimiter, serverCtx.Header},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/callbacks/wxpay",
+					Handler: callback.PaymentCallbackHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/v1"),
+	)
+
 	server.AddRoutes(
 		rest.WithMiddlewares(
 			[]rest.Middleware{serverCtx.JwtAuth, serverCtx.RateLimiter, serverCtx.Header, serverCtx.RequestTimer},
@@ -101,6 +117,35 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Method:  http.MethodPost,
 					Path:    "/stock/load",
 					Handler: order.LoadSeckillStockHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/v1"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.JwtAuth, serverCtx.RateLimiter, serverCtx.Header, serverCtx.RequestTimer},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/pay/close",
+					Handler: pay.ClosePaymentHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/pay/create",
+					Handler: pay.CreatePaymentHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/pay/query",
+					Handler: pay.QueryPaymentHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/pay/refund",
+					Handler: pay.ProcessRefundHandler(serverCtx),
 				},
 			}...,
 		),

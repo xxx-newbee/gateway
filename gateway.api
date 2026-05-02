@@ -125,6 +125,24 @@ type (
 	FindActivityRequest {
 		Id int64 `path:"id"`
 	}
+	CreatePaymentRequest {
+		OrderNo  string `json:"order_no"`
+		PayType  string `json:"pay_type"`
+		OpenId   string `json:"openid,omitempty"`
+		ClientIp string `json:"client_ip,omitempty"`
+	}
+	QueryPaymentRequest {
+		OrderNo       string `json:"order_no,omitempty"`
+		TransactionId string `json:"transaction_id,omitempty"`
+	}
+	RefundPayRequest {
+		OrderNo      string  `json:"order_no"`
+		RefundAmount float64 `json:"refund_amount"`
+		RefundReason string  `json:"refund_reason,omitempty"`
+	}
+	ClosePayOrderRequest {
+		OrderNo string `json:"order_no"`
+	}
 )
 
 @server (
@@ -203,5 +221,34 @@ service gateway-api {
 service gateway-api {
 	@handler Chat
 	post /chat (ChatRequest) returns (BaseResponse)
+}
+
+@server (
+	prefix:     /v1
+	group:      pay
+	middleware: JwtAuth,RateLimiter,Header,RequestTimer
+)
+service gateway-api {
+	@handler CreatePayment
+	post /pay/create (CreatePaymentRequest) returns (BaseResponse)
+
+	@handler QueryPayment
+	post /pay/query (QueryPaymentRequest) returns (BaseResponse)
+
+	@handler ProcessRefund
+	post /pay/refund (RefundPayRequest) returns (BaseResponse)
+
+	@handler ClosePayment
+	post /pay/close (ClosePayOrderRequest) returns (BaseResponse)
+}
+
+@server (
+	prefix:     /v1
+	group:      callback
+	middleware: RequestTimer,RateLimiter,Header
+)
+service gateway-api {
+	@handler PaymentCallback
+	post /callbacks/wxpay returns (BaseResponse)
 }
 

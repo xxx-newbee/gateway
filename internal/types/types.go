@@ -9,6 +9,10 @@ type BaseResponse struct {
 	Data interface{} `json:"data,omitempty"`
 }
 
+type CancelTimeoutOrderRequest struct {
+	OrderNo string `json:"order_no"`
+}
+
 type CaptchaResponse struct {
 	CaptchaId string `json:"captcha_id"`
 	ImgBase64 string `json:"img_base64"`
@@ -32,8 +36,35 @@ type ChatResponse struct {
 	Done     bool   `json:"done"`
 }
 
+type ClosePayOrderRequest struct {
+	OrderNo string `json:"order_no"`
+}
+
+type CreatePaymentRequest struct {
+	OrderNo  string `json:"order_no"`
+	PayType  string `json:"pay_type"`
+	OpenId   string `json:"openid,omitempty"`
+	ClientIp string `json:"client_ip,omitempty"`
+}
+
+type CreateSeckillActivityRequest struct {
+	ProductId    int64   `json:"product_id"`
+	SeckillPrice float64 `json:"seckill_price"`
+	StockNum     int32   `json:"stock_num"`
+	StartTime    int64   `json:"start_time"`
+	EndTime      int64   `json:"end_time"`
+}
+
 type DeleteLoginLogRequest struct {
 	Id uint64 `json:"id"`
+}
+
+type FindActivityRequest struct {
+	Id int64 `path:"id"`
+}
+
+type GetSeckillOrderRequest struct {
+	OrderNo string `json:"order_no"`
 }
 
 type GetUserInfoResponse struct {
@@ -42,6 +73,16 @@ type GetUserInfoResponse struct {
 	WalletAddr       string `json:"wallet_addr"`
 	UserReferralCode string `json:"user_referral_code"`
 	ReferralCode     string `json:"referral_code"`
+}
+
+type GetUserSeckillOrdersRequest struct {
+	UserId   int64 `json:"user_id"`
+	Page     int32 `json:"page"`
+	PageSize int32 `json:"page_size"`
+}
+
+type LoadSeckillStockRequest struct {
+	ActivityId int64 `json:"activity_id"`
 }
 
 type LoginLogRequest struct {
@@ -64,6 +105,17 @@ type LoginResponse struct {
 	WalletAddr       string `json:"wallet_addr"`
 	UserReferralCode string `json:"user_referral_code"`
 	ReferralCode     string `json:"referral_code"`
+}
+
+type QueryPaymentRequest struct {
+	OrderNo       string `json:"order_no,omitempty"`
+	TransactionId string `json:"transaction_id,omitempty"`
+}
+
+type RefundPayRequest struct {
+	OrderNo      string  `json:"order_no"`
+	RefundAmount float64 `json:"refund_amount"`
+	RefundReason string  `json:"refund_reason,omitempty"`
 }
 
 type RegistRequest struct {
@@ -110,34 +162,4 @@ type SendEmailResponse struct {
 type UpdateUserInfoReqest struct {
 	Nickname   string `json:"nickname"`
 	WalletAddr string `json:"wallet_addr"`
-}
-
-type CreateSeckillActivityRequest struct {
-	ProductId    int64   `json:"product_id"`
-	SeckillPrice float64 `json:"seckill_price"`
-	StockNum     int32   `json:"stock_num"`
-	StartTime    int64   `json:"start_time"`
-	EndTime      int64   `json:"end_time"`
-}
-
-type LoadSeckillStockRequest struct {
-	ActivityId int64 `json:"activity_id"`
-}
-
-type GetSeckillOrderRequest struct {
-	OrderNo string `json:"order_no"`
-}
-
-type GetUserSeckillOrdersRequest struct {
-	UserId   int64 `json:"user_id"`
-	Page     int32 `json:"page"`
-	PageSize int32 `json:"page_size"`
-}
-
-type CancelTimeoutOrderRequest struct {
-	OrderNo string `json:"order_no"`
-}
-
-type FindActivityRequest struct {
-	Id int64 `path:"id"`
 }

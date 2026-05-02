@@ -23,4 +23,7 @@ type Config struct {
 		AllowCredentials bool
 		MaxAge           int
 	}
+	WxPay struct {
+		NotifyURL string
+	}
 }
