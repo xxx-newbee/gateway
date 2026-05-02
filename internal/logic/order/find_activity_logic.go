@@ -46,6 +46,17 @@ func (l *FindActivityLogic) FindActivity(req *types.FindActivityRequest) (resp *
 	return &types.BaseResponse{
 		Code: 200,
 		Msg:  "ok",
-		Data: rpcResp,
+		Data: map[string]interface{}{
+			"activity_id":   rpcResp.ActivityId,
+			"product_id":    rpcResp.ProductId,
+			"seckill_price": rpcResp.SeckillPrice,
+			"stock_num":     rpcResp.StockNum,
+			"surplus_stock": rpcResp.SurplusStock,
+			"start_time":    rpcResp.StartTime,
+			"end_time":      rpcResp.EndTime,
+			"status":        rpcResp.Status,
+			"success":       rpcResp.Success,
+			"msg":           rpcResp.Msg,
+		},
 	}, nil
 }
