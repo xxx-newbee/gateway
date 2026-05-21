@@ -8,6 +8,7 @@ import (
 	"github.com/xxx-newbee/gateway/internal/config"
 	"github.com/xxx-newbee/gateway/internal/middleware"
 	"github.com/xxx-newbee/order/order"
+	"github.com/xxx-newbee/product/product"
 	"github.com/xxx-newbee/user/user"
 	"github.com/zeromicro/go-zero/core/breaker"
 	"github.com/zeromicro/go-zero/rest"
@@ -19,6 +20,7 @@ type ServiceContext struct {
 	UserRpc      user.UserClient
 	OrderRpc     order.OrderClient
 	ChatRpc      chat.ChatClient
+	ProductRpc   product.ProductClient
 	UserBreaker  breaker.Breaker
 	JwtAuth      rest.Middleware
 	RateLimiter  rest.Middleware
@@ -30,6 +32,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	user_client := zrpc.MustNewClient(c.UserRpcConf)
 	order_client := zrpc.MustNewClient(c.OrderRpcConf)
 	chat_client := zrpc.MustNewClient(c.ChatRpcConf)
+	product_client := zrpc.MustNewClient(c.ProductRpcConf)
 	bk := breaker.NewBreaker(breaker.WithName("gateway"))
 
 	return &ServiceContext{
@@ -37,6 +40,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		UserRpc:      user.NewUserClient(user_client.Conn()),
 		OrderRpc:     order.NewOrderClient(order_client.Conn()),
 		ChatRpc:      chat.NewChatClient(chat_client.Conn()),
+		ProductRpc:   product.NewProductClient(product_client.Conn()),
 		UserBreaker:  bk,
 		JwtAuth:      middleware.NewJwtAuthMiddleware(c.JWT.Secret, c.JWT.AccessExpire, c.JWT.RefreshExpire).Handle,
 		RateLimiter:  middleware.NewRateLimiterMiddleware().Handle,

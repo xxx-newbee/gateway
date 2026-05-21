@@ -143,6 +143,82 @@ type (
 	ClosePayOrderRequest {
 		OrderNo string `json:"order_no"`
 	}
+	// ---- 分类管理 ----
+	CreateCategoryRequest {
+		Name      string `json:"name"`
+		ParentId  int64  `json:"parent_id"`
+		SortOrder int32  `json:"sort_order"`
+	}
+	UpdateCategoryRequest {
+		CategoryId uint32 `json:"category_id"`
+		Name       string `json:"name"`
+		ParentId   int64  `json:"parent_id"`
+		SortOrder  int32  `json:"sort_order"`
+		Status     int32  `json:"status"`
+	}
+	DeleteCategoryRequest {
+		CategoryId uint32 `json:"category_id"`
+	}
+	ListCategoryRequest  {}
+	// ---- 商品管理 ----
+	CreateProductRequest {
+		Name        string  `json:"name"`
+		Description string  `json:"description"`
+		CategoryId  int64   `json:"category_id"`
+		MainImage   string  `json:"main_image"`
+		Images      string  `json:"images"`
+		Price       float64 `json:"price"`
+		Stock       int32   `json:"stock"`
+	}
+	UpdateProductRequest {
+		ProductId   uint32  `json:"product_id"`
+		Name        string  `json:"name"`
+		Description string  `json:"description"`
+		CategoryId  int64   `json:"category_id"`
+		MainImage   string  `json:"main_image"`
+		Images      string  `json:"images"`
+		Price       float64 `json:"price"`
+		Stock       int32   `json:"stock"`
+	}
+	DeleteProductRequest {
+		ProductId uint32 `json:"product_id"`
+	}
+	GetProductRequest {
+		Id int64 `path:"id"`
+	}
+	ListProductRequest {
+		Page       int32  `json:"page,optional"`
+		PageSize   int32  `json:"page_size,optional"`
+		CategoryId int64  `json:"category_id,optional"`
+		Status     int32  `json:"status,optional"`
+		Keyword    string `json:"keyword,optional"`
+	}
+	UpdateProductStatusRequest {
+		ProductId uint32 `json:"product_id"`
+		Status    int32  `json:"status"`
+	}
+	// ---- SKU管理 ----
+	CreateSkuRequest {
+		ProductId uint32  `json:"product_id"`
+		SkuCode   string  `json:"sku_code"`
+		Specs     string  `json:"specs"`
+		Price     float64 `json:"price"`
+		Stock     int32   `json:"stock"`
+	}
+	UpdateSkuRequest {
+		SkuId   uint32  `json:"sku_id"`
+		SkuCode string  `json:"sku_code"`
+		Specs   string  `json:"specs"`
+		Price   float64 `json:"price"`
+		Stock   int32   `json:"stock"`
+		Status  int32   `json:"status"`
+	}
+	DeleteSkuRequest {
+		SkuId uint32 `json:"sku_id"`
+	}
+	ListSkuRequest {
+		ProductId int64 `path:"product_id"`
+	}
 )
 
 @server (
@@ -250,5 +326,54 @@ service gateway-api {
 service gateway-api {
 	@handler PaymentCallback
 	post /callbacks/wxpay returns (BaseResponse)
+}
+
+@server (
+	prefix:     /v1
+	group:      product
+	middleware: JwtAuth,RateLimiter,Header,RequestTimer
+)
+service gateway-api {
+	@handler CreateCategory
+	post /category/create (CreateCategoryRequest) returns (BaseResponse)
+
+	@handler UpdateCategory
+	post /category/update (UpdateCategoryRequest) returns (BaseResponse)
+
+	@handler DeleteCategory
+	post /category/delete (DeleteCategoryRequest) returns (BaseResponse)
+
+	@handler ListCategory
+	get /category/list (ListCategoryRequest) returns (BaseResponse)
+
+	@handler CreateProduct
+	post /product/create (CreateProductRequest) returns (BaseResponse)
+
+	@handler UpdateProduct
+	post /product/update (UpdateProductRequest) returns (BaseResponse)
+
+	@handler DeleteProduct
+	post /product/delete (DeleteProductRequest) returns (BaseResponse)
+
+	@handler GetProduct
+	get /product/get/:id (GetProductRequest) returns (BaseResponse)
+
+	@handler ListProduct
+	get /product/list (ListProductRequest) returns (BaseResponse)
+
+	@handler UpdateProductStatus
+	post /product/update_status (UpdateProductStatusRequest) returns (BaseResponse)
+
+	@handler CreateSku
+	post /sku/create (CreateSkuRequest) returns (BaseResponse)
+
+	@handler UpdateSku
+	post /sku/update (UpdateSkuRequest) returns (BaseResponse)
+
+	@handler DeleteSku
+	post /sku/delete (DeleteSkuRequest) returns (BaseResponse)
+
+	@handler ListSku
+	get /sku/list/:product_id (ListSkuRequest) returns (BaseResponse)
 }
 
