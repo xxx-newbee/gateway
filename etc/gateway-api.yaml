@@ -40,6 +40,13 @@ ChatRpcConf:
   NonBlock: true
   Timeout: 300000
 
+ProductRpcConf:
+  Etcd:
+    Hosts:
+      - 127.0.0.1:2379
+    Key: product.rpc
+  NonBlock: true
+
 
 # 限流配置（保护下游服务）
 Limit:
