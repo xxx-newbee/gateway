@@ -125,11 +125,11 @@ type ListCategoryRequest struct {
 }
 
 type ListProductRequest struct {
-	Page       int32  `json:"page,optional"`
-	PageSize   int32  `json:"page_size,optional"`
-	CategoryId int64  `json:"category_id,optional"`
-	Status     int32  `json:"status,optional"`
-	Keyword    string `json:"keyword,optional"`
+	Page       int32  `form:"page,optional"`
+	PageSize   int32  `form:"page_size,optional"`
+	CategoryId int64  `form:"category_id,optional"`
+	Status     int32  `form:"status,optional"`
+	Keyword    string `form:"keyword,optional"`
 }
 
 type ListSkuRequest struct {
